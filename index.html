@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>幻想冒險 V7.0</title>
+    <title>幻想冒險 V7.1</title>
     <style>
         :root {
             --bg-dark: #0a0a0e;
@@ -61,18 +61,16 @@
         @media (max-width: 768px) {
             body {
                 padding: 3px;
-                height: auto;
-                min-height: 100vh;
+                height: 100vh;
+                overflow: hidden;
                 align-items: flex-start;
-                overflow-y: auto;
             }
             
             #game-container {
                 grid-template-columns: 1fr;
                 grid-template-rows: auto auto auto auto auto;
                 gap: 5px;
-                height: auto;
-                max-height: none;
+                height: 100%;
                 padding: 3px;
             }
             
@@ -86,12 +84,15 @@
             aside:first-of-type { 
                 grid-column: 1; 
                 grid-row: 2; 
+                max-height: 180px;
+                overflow: hidden;
             }
             
             .main-stage { 
                 grid-column: 1; 
                 grid-row: 3; 
-                min-height: 300px;
+                min-height: 200px;
+                max-height: 300px;
             }
             
             .control-area { 
@@ -100,52 +101,20 @@
                 grid-template-columns: 1fr;
                 min-height: auto;
                 gap: 5px;
+                max-height: 250px;
+                overflow: hidden;
             }
             
             aside:last-of-type { 
                 grid-column: 1; 
                 grid-row: 5; 
+                flex: 1;
+                overflow: hidden;
             }
             
-            .grid-list {
-                grid-template-columns: repeat(5, 1fr) !important;
-                gap: 3px !important;
-            }
-            
-            .item-slot {
-                min-height: 35px !important;
-                max-height: 45px !important;
-                font-size: 0.9em !important;
-            }
-            
-            .btn {
-                padding: 8px !important;
-                font-size: 0.8em !important;
-                min-height: 44px;
-            }
-            
-            .enemy-sprite {
-                font-size: 4em !important;
-            }
-            
-            .modal-box {
-                width: 95% !important;
-                padding: 15px !important;
-                margin: 10px;
-            }
-            
-            .panel {
-                padding: 8px !important;
-            }
-            
-            .shop-grid, .recipe-list, .upgrade-list {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
-            }
-        }
-
-        @media (max-width: 480px) {
             .grid-list {
                 grid-template-columns: repeat(4, 1fr) !important;
+                gap: 3px !important;
             }
             
             .item-slot {
@@ -155,17 +124,101 @@
             }
             
             .btn {
-                padding: 6px !important;
-                font-size: 0.75em !important;
-                min-height: 40px;
+                padding: 8px 4px !important;
+                font-size: 0.8em !important;
+                min-height: 44px;
+                line-height: 1.2;
             }
             
             .enemy-sprite {
                 font-size: 3em !important;
             }
             
+            .modal-box {
+                width: 95% !important;
+                padding: 15px !important;
+                margin: 10px;
+                max-height: 80vh !important;
+            }
+            
+            .panel {
+                padding: 8px !important;
+            }
+            
             .shop-grid, .recipe-list, .upgrade-list {
-                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+            }
+            
+            /* 技能按鈕調整 */
+            #skill-1, #skill-2, #skill-3 {
+                padding: 4px 2px !important;
+                font-size: 0.7em !important;
+                min-height: 50px;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+            }
+            
+            #skill-1 small, #skill-2 small, #skill-3 small {
+                font-size: 0.6em !important;
+                margin-top: 2px;
+            }
+            
+            /* 控制區域按鈕調整 */
+            .control-area > .panel {
+                padding: 5px !important;
+                gap: 4px !important;
+            }
+            
+            .control-area > .panel > div {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 4px;
+            }
+            
+            /* 背包標籤調整 */
+            .bag-category-tabs {
+                flex-wrap: nowrap;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+            
+            .bag-category-tabs button {
+                min-width: 60px;
+                padding: 4px !important;
+                font-size: 0.7em !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid-list {
+                grid-template-columns: repeat(4, 1fr) !important;
+            }
+            
+            .item-slot {
+                min-height: 28px !important;
+                max-height: 36px !important;
+                font-size: 0.75em !important;
+            }
+            
+            .btn {
+                padding: 6px 3px !important;
+                font-size: 0.7em !important;
+                min-height: 40px;
+            }
+            
+            .enemy-sprite {
+                font-size: 2.5em !important;
+            }
+            
+            .shop-grid, .recipe-list, .upgrade-list {
+                grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)) !important;
+            }
+            
+            #skill-1, #skill-2, #skill-3 {
+                font-size: 0.65em !important;
+                min-height: 45px;
             }
         }
 
@@ -194,6 +247,15 @@
             aside:last-of-type { 
                 grid-column: 1 / span 2; 
                 grid-row: 4; 
+            }
+            
+            .control-area > .panel {
+                padding: 8px !important;
+            }
+            
+            #skill-1, #skill-2, #skill-3 {
+                padding: 8px 4px !important;
+                font-size: 0.75em !important;
             }
         }
 
@@ -799,13 +861,44 @@
                 transform: none;
             }
         }
+        
+        /* 新增密碼輸入樣式 */
+        .password-input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 5px;
+            color: white;
+            font-size: 1em;
+            text-align: center;
+        }
+        
+        .password-error {
+            color: #ff5252;
+            font-size: 0.8em;
+            margin-top: 5px;
+            min-height: 20px;
+        }
+        
+        /* 技能按鈕調整 */
+        .skill-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
 
 <div id="game-container">
     <header class="panel header">
-        <div style="font-size:1.2em; font-weight:bold; color:var(--accent);">⚔️ 幻想冒險 <span style="font-size:0.6em;">V7.0</span></div>
+        <div style="font-size:1.2em; font-weight:bold; color:var(--accent);">⚔️ 幻想冒險 <span style="font-size:0.6em;">V7.1</span></div>
         <div style="font-size:0.9em;">Lv.<span id="ui-level">1</span> | 深度: <span id="ui-depth">0</span> 層 | 金幣: <span id="ui-gold" style="color:#ffd700">50</span> G</div>
     </header>
 
@@ -906,9 +999,18 @@
 
     <section class="control-area">
         <div class="panel" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; padding:5px;">
-            <button class="btn" id="skill-1" onclick="Combat.useSkill(1)">強力擊<br><small id="sk1-val" style="color:var(--accent); font-size:0.7em">0</small></button>
-            <button class="btn" id="skill-2" onclick="Combat.useSkill(2)">治癒術<br><small id="sk2-val" style="color:var(--success); font-size:0.7em">0</small></button>
-            <button class="btn" id="skill-3" onclick="Combat.useSkill(3)">雷鳴斬<br><small id="sk3-val" style="color:var(--mana); font-size:0.7em">0</small></button>
+            <button class="btn skill-btn" id="skill-1" onclick="Combat.useSkill(1)">
+                <div>強力擊</div>
+                <small id="sk1-val" style="color:var(--accent); font-size:0.7em">0</small>
+            </button>
+            <button class="btn skill-btn" id="skill-2" onclick="Combat.useSkill(2)">
+                <div>治癒術</div>
+                <small id="sk2-val" style="color:var(--success); font-size:0.7em">0</small>
+            </button>
+            <button class="btn skill-btn" id="skill-3" onclick="Combat.useSkill(3)">
+                <div>雷鳴斬</div>
+                <small id="sk3-val" style="color:var(--mana); font-size:0.7em">0</small>
+            </button>
         </div>
         <div class="panel" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; padding:5px;">
             <button id="btn-explore" class="btn btn-exp" onclick="Game.explore()">🐾 冒險</button>
@@ -1026,6 +1128,31 @@
                     </div>
                 </div>
             </div>
+            <div class="btn class-card" onclick="showPasswordModal()">
+                <div style="font-size:2.2em;">👑</div>
+                <div style="flex:1;">
+                    <div style="font-size:1em; font-weight:bold; color:var(--accent); margin-bottom:5px;">上帝</div>
+                    <div style="font-size:0.75em; line-height:1.4; color:#ccc;">
+                        <div>❤️ HP: 10000</div>
+                        <div>⚡ MP: 10000</div>
+                        <div>⚔️ ATK: 1000 | 🛡️ DEF: 100</div>
+                        <div style="color:#888; margin-top:5px;">全能的神明，擁有無限的力量</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="password-modal" class="modal-overlay" style="display:none;">
+    <div class="modal-box">
+        <div style="font-size:3em; margin-bottom:10px;">🔒</div>
+        <h2 style="color:var(--accent); margin-bottom:10px;">輸入密碼解鎖上帝模式</h2>
+        <input type="password" id="password-input" class="password-input" placeholder="輸入密碼">
+        <div class="password-error" id="password-error"></div>
+        <div style="display:flex; gap:10px; margin-top:15px;">
+            <button class="btn" style="flex:1" onclick="checkPassword()">確認</button>
+            <button class="btn" style="flex:1" onclick="hidePasswordModal()">取消</button>
         </div>
     </div>
 </div>
@@ -1035,6 +1162,50 @@
 let isCombatAction = false;
 let currentBagCategory = 'all';
 let currentShopCategory = 'potion';
+
+// 密碼驗證相關
+const GOD_PASSWORDS = ['940516', '991103'];
+let passwordAttempts = 0;
+const MAX_PASSWORD_ATTEMPTS = 5;
+
+function showPasswordModal() {
+    document.getElementById('password-modal').style.display = 'flex';
+    document.getElementById('password-input').value = '';
+    document.getElementById('password-error').textContent = '';
+    document.getElementById('password-input').focus();
+}
+
+function hidePasswordModal() {
+    document.getElementById('password-modal').style.display = 'none';
+    passwordAttempts = 0;
+}
+
+function checkPassword() {
+    const input = document.getElementById('password-input').value;
+    const errorElement = document.getElementById('password-error');
+    
+    passwordAttempts++;
+    
+    if (GOD_PASSWORDS.includes(input)) {
+        hidePasswordModal();
+        startGame('god');
+    } else {
+        if (passwordAttempts >= MAX_PASSWORD_ATTEMPTS) {
+            errorElement.textContent = `密碼錯誤！已嘗試 ${passwordAttempts} 次，請稍後再試。`;
+            setTimeout(hidePasswordModal, 2000);
+        } else {
+            const remaining = MAX_PASSWORD_ATTEMPTS - passwordAttempts;
+            errorElement.textContent = `密碼錯誤！還剩 ${remaining} 次嘗試機會。`;
+        }
+    }
+}
+
+// 密碼輸入框回車鍵支持
+document.getElementById('password-input').addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+        checkPassword();
+    }
+});
 
 function startGame(cls) {
     Game.init(cls);
@@ -1141,7 +1312,12 @@ const DB = {
         "防禦護符": { type: "buff", category: "material", stat: "def", val: 5, price: 150, icon: "🛡️", r: "rare", desc: "永久 DEF +5" },
         "生命護符": { type: "buff", category: "material", stat: "maxHp", val: 50, price: 180, icon: "❤️", r: "rare", desc: "永久 MaxHP +50" },
         "魔力護符": { type: "buff", category: "material", stat: "maxMp", val: 30, price: 160, icon: "🌀", r: "rare", desc: "永久 MaxMP +30" },
-        "暴擊寶珠": { type: "buff", category: "material", stat: "crit", val: 8, price: 250, icon: "✨", r: "epic", desc: "暴擊率 +8%" }
+        "暴擊寶珠": { type: "buff", category: "material", stat: "crit", val: 8, price: 250, icon: "✨", r: "epic", desc: "暴擊率 +8%" },
+        
+        // 上帝模式專屬裝備
+        "神怒之刃": { type: "weapon", category: "weapon", atk: 150, atkPercent: 20, price: 0, icon: "⚡🗡️", r: "mythic", desc: "神明憤怒的武器，增加150點攻擊力和20%攻擊力" },
+        "不朽戰甲": { type: "armor", category: "armor", hp: 0, hpPercent: 25, def: 15, price: 0, icon: "♾️🛡️", r: "mythic", desc: "神級戰甲，增加25%最大生命值和15點防禦" },
+        "生命之源護甲": { type: "armor", category: "armor", hp: 0, hpPercent: 15, def: 8, price: 0, icon: "🌿🛡️", r: "mythic", desc: "神秘護甲，增加15%最大生命值和8點防禦" }
     },
     
     // 合成配方
@@ -1350,20 +1526,87 @@ const Game = {
             Player.baseAtk = 16;
             Player.maxMp = 120; Player.mp = 120; 
         }
+        else if(clsId === 'god'){ 
+            Player.class = "上帝"; 
+            Player.maxHp = 10000; Player.hp = 10000; 
+            Player.baseMaxHp = 10000;
+            Player.atk = 1000; 
+            Player.baseAtk = 1000;
+            Player.def = 100;
+            Player.crit = 50;
+            Player.maxMp = 10000; Player.mp = 10000; 
+            Player.gold = 999999;
+            
+            // 添加所有藥水各999個
+            const potions = ["小型紅藥水", "中型紅藥水", "大型紅藥水", "小型藍藥水", "中型藍藥水", "大型藍藥水", "全恢復藥水"];
+            potions.forEach(potion => {
+                for (let i = 0; i < 999; i++) {
+                    Player.bag.push({ name: potion, ...DB.items[potion], enhanceLevel: 0 });
+                }
+            });
+            
+            // 添加所有素材各999個
+            const materials = ["木材", "鐵礦石", "銅礦石", "銀礦石", "金礦石", "獸皮", "尖牙", "爪子", "羽毛", 
+                             "魔法結晶", "靈魂碎片", "火焰之心", "冰霜核心", "雷電之核", "龍鱗", "鳳凰之羽", 
+                             "惡魔角", "天使之羽", "星辰碎片", "神之血", "強化寶石"];
+            materials.forEach(mat => {
+                Player.materials[mat] = 999;
+            });
+            
+            // 添加所有護符各999個
+            const buffs = ["力量護符", "防禦護符", "生命護符", "魔力護符", "暴擊寶珠"];
+            buffs.forEach(buff => {
+                for (let i = 0; i < 999; i++) {
+                    Player.bag.push({ name: buff, ...DB.items[buff], enhanceLevel: 0 });
+                }
+            });
+            
+            // 添加上帝專屬裝備
+            Player.bag.push({ name: "神怒之刃", ...DB.items["神怒之刃"], enhanceLevel: 0 });
+            Player.bag.push({ name: "不朽戰甲", ...DB.items["不朽戰甲"], enhanceLevel: 0 });
+            
+            // 自動裝備最好的裝備
+            const godWeapon = Player.bag.find(item => item.name === "神怒之刃");
+            const godArmor = Player.bag.find(item => item.name === "不朽戰甲");
+            
+            if (godWeapon) {
+                Player.weapon = godWeapon;
+                Player.equipmentAtkPercent = godWeapon.atkPercent || 0;
+                // 從背包移除
+                Player.bag = Player.bag.filter(item => !(item.name === "神怒之刃" && item === godWeapon));
+            }
+            
+            if (godArmor) {
+                Player.armor = godArmor;
+                if (godArmor.hp) Player.equipmentHpBonus += godArmor.hp;
+                if (godArmor.hpPercent) Player.equipmentHpPercent += godArmor.hpPercent;
+                // 從背包移除
+                Player.bag = Player.bag.filter(item => !(item.name === "不朽戰甲" && item === godArmor));
+            }
+            
+            UI.log("⚡ 上帝模式已激活！");
+        }
         
-        // 重置所有狀態
+        // 重置其他狀態
         Player.depth = 0;
         Player.level = 1;
         Player.exp = 0;
         Player.maxExp = 100;
-        Player.gold = 50;
-        Player.bag = [];
-        Player.weapon = null;
-        Player.armor = null;
-        Player.materials = {};
-        Player.equipmentHpBonus = 0;
-        Player.equipmentHpPercent = 0;
-        Player.equipmentAtkPercent = 0;
+        if (clsId !== 'god') Player.gold = 50;
+        if (clsId !== 'god') {
+            Player.bag = [];
+            Player.weapon = null;
+            Player.armor = null;
+            Player.materials = {};
+            Player.equipmentHpBonus = 0;
+            Player.equipmentHpPercent = 0;
+            Player.equipmentAtkPercent = 0;
+            
+            // 給初始物品
+            this.addItem("小型紅藥水");
+            this.addItem("強化寶石", 5);
+        }
+        
         Game.bossCount = 0;
         Game.currentPage = "adventure";
         isCombatAction = false;
@@ -1371,8 +1614,6 @@ const Game = {
         currentShopCategory = 'potion';
         
         document.getElementById('start-modal').style.display = 'none';
-        this.addItem("小型紅藥水");
-        this.addItem("強化寶石", 5); // 給玩家一些初始強化寶石
         this.next();
     },
 
@@ -1720,6 +1961,13 @@ const Game = {
                 Player.crit += 1.5; 
                 Player.def += 1.5;
             }
+            else if(Player.class === "上帝") { 
+                Player.baseMaxHp += 1000; 
+                Player.baseAtk += 100; 
+                Player.crit += 2; 
+                Player.def += 10;
+                Player.maxMp += 1000;
+            }
             
             // 重新計算最大生命值（包括裝備加成）
             this.updatePlayerStats();
@@ -1771,6 +2019,8 @@ const Game = {
     restart() {
         document.getElementById('dead-modal').style.display = 'none';
         document.getElementById('start-modal').style.display = 'flex';
+        Player.hp = Player.maxHp;
+        Player.mp = Player.maxMp;
     }
 };
 
@@ -1825,6 +2075,7 @@ const Combat = {
             this.dealDamage(dmg, true);
         } else {
             isCombatAction = false;
+            UI.log("魔力不足！");
             return;
         }
         
@@ -1837,6 +2088,12 @@ const Combat = {
 
     dealDamage(dmg, isCrit) {
         Game.enemy.hp -= dmg;
+        
+        // 在事件描述區域顯示玩家攻擊傷害
+        const originalDesc = document.getElementById('event-desc').innerText;
+        document.getElementById('event-desc').innerText = `你對 ${Game.enemy.name} 造成 ${dmg}${isCrit ? ' (暴擊)' : ''} 傷害`;
+        document.getElementById('event-desc').style.color = isCrit ? "#ffeb3b" : "#4caf50";
+        
         UI.float(dmg + (isCrit ? "!" : ""), isCrit ? "#ffeb3b" : "white");
         UI.shake();
         UI.log(`你對 ${Game.enemy.name} 造成 ${dmg}${isCrit ? ' (暴擊)' : ''} 傷害`);
@@ -1851,7 +2108,12 @@ const Combat = {
                 Game.addMaterial(randomMat, amount);
             }
         } else {
-            setTimeout(() => this.enemyTurn(), 600);
+            setTimeout(() => {
+                // 恢復原來的描述
+                document.getElementById('event-desc').innerText = originalDesc;
+                document.getElementById('event-desc').style.color = "#888";
+                this.enemyTurn();
+            }, 600);
         }
         UI.update();
     },
@@ -1859,17 +2121,13 @@ const Combat = {
     enemyTurn() {
         if (Game.state !== 'combat') return;
         
-        // 怪物攻擊力就是顯示的數值
-        const rawDamage = Game.enemy.atk;
-        let finalDamage = rawDamage;
+        // 怪物攻擊力直接等於傷害（移除隨機性和防禦減傷）
+        const finalDamage = Game.enemy.atk;
         
-        // 添加隨機性：±10%
-        const variance = 0.1;
-        const randomFactor = 1 - variance + Math.random() * (variance * 2);
-        finalDamage = Math.floor(finalDamage * randomFactor);
-        
-        // 確保傷害至少為1
-        finalDamage = Math.max(1, finalDamage);
+        // 在事件描述區域顯示敵人攻擊傷害
+        const originalDesc = document.getElementById('event-desc').innerText;
+        document.getElementById('event-desc').innerText = `${Game.enemy.name} 對你造成 ${finalDamage} 傷害`;
+        document.getElementById('event-desc').style.color = "#ff5252";
         
         Player.hp -= finalDamage;
         UI.float(`-${finalDamage}`, "var(--danger)");
@@ -1877,6 +2135,12 @@ const Combat = {
         
         if (Player.hp <= 0) {
             Game.showDeathScreen();
+        } else {
+            // 延遲恢復原來的描述
+            setTimeout(() => {
+                document.getElementById('event-desc').innerText = originalDesc;
+                document.getElementById('event-desc').style.color = "#888";
+            }, 1000);
         }
         isCombatAction = false;
         UI.update();
@@ -1907,6 +2171,12 @@ const Combat = {
         Game.state = "idle";
         isCombatAction = false;
         UI.renderStage("🏆", "戰鬥勝利", `獲得 ${loot} 金幣 & ${expGain} EXP`, false);
+        
+        // 延遲清空勝利訊息
+        setTimeout(() => {
+            document.getElementById('event-desc').innerText = "";
+        }, 2000);
+        
         document.getElementById('boss-warning').style.display = 'none';
         Game.updateButtons();
         UI.update();
@@ -1916,7 +2186,9 @@ const Combat = {
         if (Game.state !== 'combat' || isCombatAction || Game.currentPage !== 'adventure') return;
         
         isCombatAction = true;
-        if (Math.random() > 0.4) {
+        const fleeChance = 0.7; // 逃跑成功率設為70%
+        
+        if (Math.random() < fleeChance) {
             UI.log("逃跑成功");
             setTimeout(() => {
                 Game.next();
@@ -1924,9 +2196,38 @@ const Combat = {
             }, 800);
         } else {
             UI.log("逃跑失敗！");
+            // 逃跑失敗會被敵人攻擊
             setTimeout(() => {
-                this.enemyTurn();
-                isCombatAction = false;
+                // 在事件描述區域顯示逃跑失敗
+                const originalDesc = document.getElementById('event-desc').innerText;
+                document.getElementById('event-desc').innerText = "逃跑失敗！";
+                document.getElementById('event-desc').style.color = "#ff9800";
+                
+                // 延遲一下再顯示傷害
+                setTimeout(() => {
+                    // 在事件描述區域顯示敵人攻擊傷害
+                    document.getElementById('event-desc').innerText = `${Game.enemy.name} 趁你逃跑時攻擊，對你造成 ${Game.enemy.atk} 傷害`;
+                    document.getElementById('event-desc').style.color = "#ff5252";
+                    
+                    // 直接執行敵人攻擊邏輯
+                    const finalDamage = Game.enemy.atk;
+                    Player.hp -= finalDamage;
+                    UI.float(`-${finalDamage}`, "var(--danger)");
+                    UI.log(`${Game.enemy.name} 趁你逃跑時攻擊，對你造成 ${finalDamage} 傷害`);
+                    
+                    // 恢復原來的描述
+                    setTimeout(() => {
+                        document.getElementById('event-desc').innerText = originalDesc;
+                        document.getElementById('event-desc').style.color = "#888";
+                    }, 1000);
+                    
+                    if (Player.hp <= 0) {
+                        Game.showDeathScreen();
+                    } else {
+                        isCombatAction = false;
+                    }
+                    UI.update();
+                }, 600);
             }, 800);
         }
     }
@@ -1937,16 +2238,16 @@ const UI = {
     update() {
         document.getElementById('ui-level').innerText = Player.level;
         document.getElementById('ui-depth').innerText = Player.depth;
-        document.getElementById('ui-gold').innerText = Player.gold;
+        document.getElementById('ui-gold').innerText = Player.gold.toLocaleString();
         document.getElementById('ui-class').innerText = Player.class;
         
         // 計算總攻擊力（基礎+武器）
         const totalAtk = Player.atk;
-        document.getElementById('ui-atk').innerText = totalAtk;
+        document.getElementById('ui-atk').innerText = totalAtk.toLocaleString();
         
         // 計算總防禦力（基礎+盔甲）
         const totalDef = Player.def;
-        document.getElementById('ui-def').innerText = totalDef;
+        document.getElementById('ui-def').innerText = totalDef.toLocaleString();
         
         document.getElementById('ui-crit').innerText = Player.crit.toFixed(1) + "%";
         
@@ -1971,6 +2272,7 @@ const UI = {
         else if (Player.class === "盜賊") document.getElementById('ui-avatar').innerText = "🗡️";
         else if (Player.class === "法師") document.getElementById('ui-avatar').innerText = "🧙";
         else if (Player.class === "獵人") document.getElementById('ui-avatar').innerText = "🏹";
+        else if (Player.class === "上帝") document.getElementById('ui-avatar').innerText = "👑";
 
         this.setBar('exp', Player.exp, Player.maxExp);
         this.setBar('hp', Player.hp, Player.maxHp);
@@ -1991,9 +2293,9 @@ const UI = {
         document.getElementById('skill-3').disabled = (Player.mp < 60) || !canUseSkills;
 
         const base = Player.atk;
-        document.getElementById('sk1-val').innerText = `${Math.floor(base * 2.2)} (20MP)`;
-        document.getElementById('sk2-val').innerText = `+${Math.floor(Player.maxHp * 0.5)} (30MP)`;
-        document.getElementById('sk3-val').innerText = `${Math.floor(base * 4.5)} (60MP)`;
+        document.getElementById('sk1-val').innerText = `${Math.floor(base * 2.2).toLocaleString()} (20MP)`;
+        document.getElementById('sk2-val').innerText = `+${Math.floor(Player.maxHp * 0.5).toLocaleString()} (30MP)`;
+        document.getElementById('sk3-val').innerText = `${Math.floor(base * 4.5).toLocaleString()} (60MP)`;
 
         this.renderBag();
         if (Game.currentPage === 'shop') {
@@ -2008,7 +2310,7 @@ const UI = {
         const p = Math.max(0, (v / m) * 100);
         document.getElementById(`${id}-bar`).style.width = p + "%";
         if (document.getElementById(`${id}-text`)) {
-            document.getElementById(`${id}-text`).innerText = `${Math.floor(Math.max(0,v))} / ${Math.floor(m)}`;
+            document.getElementById(`${id}-text`).innerText = `${Math.floor(Math.max(0,v)).toLocaleString()} / ${Math.floor(m).toLocaleString()}`;
         }
     },
 
@@ -2107,7 +2409,7 @@ const UI = {
                 countBadge.style.display = 'flex';
                 countBadge.style.alignItems = 'center';
                 countBadge.style.justifyContent = 'center';
-                countBadge.innerText = item.count > 9 ? '9+' : item.count;
+                countBadge.innerText = item.count > 9 ? '9+' : (item.count > 999 ? '999+' : item.count);
                 slot.appendChild(countBadge);
             }
             
@@ -2293,9 +2595,9 @@ const UI = {
         let statsHTML = "";
         
         if (item.isMaterial) {
-            statsHTML = `<div>數量: ${item.count}</div>`;
+            statsHTML = `<div>數量: ${item.count.toLocaleString()}</div>`;
         } else if (item.type === 'weapon') {
-            statsHTML = `<div>攻擊力: +${item.atk || 0}</div>`;
+            statsHTML = `<div>攻擊力: +${(item.atk || 0).toLocaleString()}</div>`;
             if (item.atkPercent) {
                 statsHTML += `<div>攻擊力加成: +${item.atkPercent}%</div>`;
             }
@@ -2303,11 +2605,11 @@ const UI = {
                 statsHTML += `<div class="enhance-level">強化等級: +${item.enhanceLevel}</div>`;
             }
         } else if (item.type === 'armor') {
-            statsHTML = `<div>生命值: +${item.hp || 0}</div>`;
+            statsHTML = `<div>生命值: +${(item.hp || 0).toLocaleString()}</div>`;
             if (item.hpPercent) {
                 statsHTML += `<div>生命值加成: +${item.hpPercent}%</div>`;
             }
-            statsHTML += `<div>防禦力: +${item.def || 0}</div>`;
+            statsHTML += `<div>防禦力: +${(item.def || 0).toLocaleString()}</div>`;
             if (item.mp) {
                 statsHTML += `<div>魔力值: +${item.mp}</div>`;
             }
@@ -2333,14 +2635,23 @@ const UI = {
         if (item.isMaterial) {
             act.innerText = "關閉";
             act.onclick = () => this.closeModal();
+            act.style.background = '#666';
         } else {
             // 檢查是否已裝備
             const isEquippedWeapon = Player.weapon && Player.weapon.name === item.name && Player.weapon.enhanceLevel === item.enhanceLevel;
             const isEquippedArmor = Player.armor && Player.armor.name === item.name && Player.armor.enhanceLevel === item.enhanceLevel;
             const isEquipped = isEquippedWeapon || isEquippedArmor;
             
+            // 檢查是否在戰鬥中（某些物品不能在戰鬥中使用）
+            const inCombat = Game.state === 'combat' && Game.currentPage === 'adventure';
+            
             if (item.type === 'weapon') {
-                if (isEquipped) {
+                if (inCombat) {
+                    act.innerText = "戰鬥中無法使用";
+                    act.disabled = true;
+                    act.style.background = '#666';
+                    act.onclick = null;
+                } else if (isEquipped) {
                     act.innerText = "卸下";
                     act.onclick = () => {
                         Player.bag.push(Player.weapon);
@@ -2375,7 +2686,12 @@ const UI = {
                     };
                 }
             } else if (item.type === 'armor') {
-                if (isEquipped) {
+                if (inCombat) {
+                    act.innerText = "戰鬥中無法使用";
+                    act.disabled = true;
+                    act.style.background = '#666';
+                    act.onclick = null;
+                } else if (isEquipped) {
                     act.innerText = "卸下";
                     act.onclick = () => {
                         Player.bag.push(Player.armor);
@@ -2444,6 +2760,7 @@ const UI = {
                     UI.update();
                 };
             } else {
+                // 藥水類可以在戰鬥中使用
                 act.innerText = "使用";
                 act.onclick = () => {
                     if(item.effect === 'hp') Player.hp = Math.min(Player.maxHp, Player.hp + item.val);
@@ -2535,6 +2852,16 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 手機觸控優化
     document.addEventListener('touchstart', function() {}, {passive: true});
+    
+    // 防止手機雙擊放大
+    let lastTouchEnd = 0;
+    document.addEventListener('touchend', function(event) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+            event.preventDefault();
+        }
+        lastTouchEnd = now;
+    }, false);
 });
 </script>
 </body>
