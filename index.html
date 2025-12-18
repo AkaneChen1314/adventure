@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>幻想冒險 V6.0</title>
+    <title>幻想冒險 V7.0</title>
     <style>
         :root {
             --bg-dark: #0a0a0e;
@@ -25,125 +25,318 @@
             --category-material: #ff9800;
         }
 
-        * { box-sizing: border-box; user-select: none; }
+        * { 
+            box-sizing: border-box; 
+            user-select: none; 
+            -webkit-tap-highlight-color: transparent;
+        }
+        
         body {
-            margin: 0; background: var(--bg-dark); color: var(--text-main);
-            font-family: 'Segoe UI', system-ui, sans-serif; height: 100vh;
-            display: flex; justify-content: center; align-items: center; overflow: hidden;
-            padding: 10px;
+            margin: 0; 
+            background: var(--bg-dark); 
+            color: var(--text-main);
+            font-family: 'Segoe UI', system-ui, sans-serif; 
+            height: 100vh;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            overflow: hidden;
+            padding: 5px;
+            touch-action: manipulation;
         }
 
         #game-container {
-            width: 100%; height: 100%; max-width: 1600px; display: grid;
-            grid-template-columns: minmax(250px, 280px) 1fr minmax(300px, 380px); 
-            grid-template-rows: 60px 1fr 180px;
-            gap: 8px; padding: 8px; overflow: hidden;
+            width: 100%; 
+            height: 100%; 
+            max-width: 1600px; 
+            display: grid;
+            grid-template-columns: minmax(250px, 1fr) 2fr minmax(250px, 1fr); 
+            grid-template-rows: auto 1fr auto;
+            gap: 8px; 
+            padding: 5px; 
+            overflow: hidden;
         }
 
-        @media (max-width: 1024px) {
-            #game-container {
-                grid-template-columns: 1fr; grid-template-rows: auto auto auto auto auto;
+        /* 手機版佈局 */
+        @media (max-width: 768px) {
+            body {
+                padding: 3px;
+                height: auto;
+                min-height: 100vh;
+                align-items: flex-start;
+                overflow-y: auto;
             }
-            .header { grid-column: 1; }
-            aside:first-of-type { grid-column: 1; grid-row: 2; }
-            .main-stage { grid-column: 1; grid-row: 3; }
-            .control-area { grid-column: 1; grid-row: 4; }
-            aside:last-of-type { grid-column: 1; grid-row: 5; }
             
-            .control-area {
+            #game-container {
                 grid-template-columns: 1fr;
+                grid-template-rows: auto auto auto auto auto;
+                gap: 5px;
+                height: auto;
+                max-height: none;
+                padding: 3px;
+            }
+            
+            .header { 
+                grid-column: 1; 
+                grid-row: 1;
+                padding: 5px 10px;
+                font-size: 0.9em;
+            }
+            
+            aside:first-of-type { 
+                grid-column: 1; 
+                grid-row: 2; 
+            }
+            
+            .main-stage { 
+                grid-column: 1; 
+                grid-row: 3; 
+                min-height: 300px;
+            }
+            
+            .control-area { 
+                grid-column: 1; 
+                grid-row: 4; 
+                grid-template-columns: 1fr;
+                min-height: auto;
                 gap: 5px;
             }
             
+            aside:last-of-type { 
+                grid-column: 1; 
+                grid-row: 5; 
+            }
+            
             .grid-list {
-                grid-template-columns: repeat(auto-fill, minmax(45px, 1fr)) !important;
+                grid-template-columns: repeat(5, 1fr) !important;
                 gap: 3px !important;
             }
             
             .item-slot {
-                font-size: 0.9em !important;
                 min-height: 35px !important;
-            }
-        }
-
-        @media (max-width: 768px) {
-            #game-container {
-                padding: 5px;
-                gap: 5px;
+                max-height: 45px !important;
+                font-size: 0.9em !important;
             }
             
-            .panel {
+            .btn {
                 padding: 8px !important;
+                font-size: 0.8em !important;
+                min-height: 44px;
             }
             
             .enemy-sprite {
                 font-size: 4em !important;
             }
             
-            .tabs-container button {
-                font-size: 0.7em !important;
-                padding: 4px !important;
+            .modal-box {
+                width: 95% !important;
+                padding: 15px !important;
+                margin: 10px;
+            }
+            
+            .panel {
+                padding: 8px !important;
+            }
+            
+            .shop-grid, .recipe-list, .upgrade-list {
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .grid-list {
+                grid-template-columns: repeat(4, 1fr) !important;
+            }
+            
+            .item-slot {
+                min-height: 30px !important;
+                max-height: 40px !important;
+                font-size: 0.8em !important;
             }
             
             .btn {
-                padding: 8px !important;
-                font-size: 0.8em !important;
+                padding: 6px !important;
+                font-size: 0.75em !important;
+                min-height: 40px;
+            }
+            
+            .enemy-sprite {
+                font-size: 3em !important;
+            }
+            
+            .shop-grid, .recipe-list, .upgrade-list {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
+            }
+        }
+
+        /* 平板版佈局 */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            #game-container {
+                grid-template-columns: 1fr 1.5fr;
+                grid-template-rows: auto 1fr auto auto;
+            }
+            
+            aside:first-of-type { 
+                grid-column: 1; 
+                grid-row: 2; 
+            }
+            
+            .main-stage { 
+                grid-column: 2; 
+                grid-row: 2; 
+            }
+            
+            .control-area { 
+                grid-column: 1 / span 2; 
+                grid-row: 3; 
+            }
+            
+            aside:last-of-type { 
+                grid-column: 1 / span 2; 
+                grid-row: 4; 
             }
         }
 
         .panel {
-            background: var(--panel-bg); border: 1px solid var(--panel-border);
-            border-radius: 8px; padding: 10px; display: flex; flex-direction: column;
+            background: var(--panel-bg); 
+            border: 1px solid var(--panel-border);
+            border-radius: 8px; 
+            padding: 10px; 
+            display: flex; 
+            flex-direction: column;
             box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+            overflow: hidden;
         }
 
-        .header { grid-column: 1 / -1; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent); padding: 0 10px; }
-        .main-stage { grid-column: 2 / 3; grid-row: 2 / 3; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; background: radial-gradient(circle, #222 0%, #111 100%); overflow: hidden; }
+        .header { 
+            grid-column: 1 / -1; 
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: space-between; 
+            align-items: center; 
+            border-bottom: 2px solid var(--accent); 
+            padding: 0 10px; 
+            font-size: 0.9em;
+        }
+        
+        .main-stage { 
+            grid-column: 2 / 3; 
+            grid-row: 2 / 3; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+            background: radial-gradient(circle, #222 0%, #111 100%); 
+            overflow: hidden; 
+        }
         
         .control-area { 
-            grid-column: 2 / 3; grid-row: 3 / 4; 
-            display: grid; grid-template-columns: 1fr 1fr 1.2fr; gap: 6px; 
+            grid-column: 2 / 3; 
+            grid-row: 3 / 4; 
+            display: grid; 
+            grid-template-columns: 1fr 1fr 1.2fr; 
+            gap: 6px; 
             min-height: 150px;
         }
 
-        @media (max-width: 480px) {
-            .control-area {
-                grid-template-columns: 1fr !important;
-            }
+        .enemy-sprite { 
+            font-size: 5em; 
+            transition: 0.2s; 
+            text-align: center;
         }
-
-        .enemy-sprite { font-size: 6em; transition: 0.2s; }
         
         .enemy-ui { 
-            width: 90%; background: rgba(0,0,0,0.7); padding: 10px; 
-            border-radius: 6px; border: 1px solid #444; margin-bottom: 10px; 
+            width: 95%; 
+            background: rgba(0,0,0,0.7); 
+            padding: 10px; 
+            border-radius: 6px; 
+            border: 1px solid #444; 
+            margin-bottom: 10px; 
         }
+        
         .enemy-stats {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 6px; font-weight: bold; color: var(--danger);
-            font-size: 0.9em; white-space: nowrap;
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center;
+            margin-bottom: 6px; 
+            font-weight: bold; 
+            color: var(--danger);
+            font-size: 0.9em; 
+            white-space: nowrap;
         }
+        
         .enemy-stats span:first-child {
-            display: flex; align-items: center; gap: 5px;
+            display: flex; 
+            align-items: center; 
+            gap: 5px;
         }
-        .bar-container { height: 14px; background: #222; border-radius: 7px; overflow: hidden; position: relative; border: 1px solid #444; }
-        .bar-fill { height: 100%; transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-        .hp-fill { background: var(--danger); box-shadow: 0 0 6px var(--danger); }
-        .mp-fill { background: var(--mana); box-shadow: 0 0 6px var(--mana); }
-        .bar-text { position: absolute; width: 100%; text-align: center; top:0; font-size: 9px; font-weight: bold; line-height: 14px; text-shadow: 1px 1px black; }
+        
+        .bar-container { 
+            height: 14px; 
+            background: #222; 
+            border-radius: 7px; 
+            overflow: hidden; 
+            position: relative; 
+            border: 1px solid #444; 
+        }
+        
+        .bar-fill { 
+            height: 100%; 
+            transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        
+        .hp-fill { 
+            background: var(--danger); 
+            box-shadow: 0 0 6px var(--danger); 
+        }
+        
+        .mp-fill { 
+            background: var(--mana); 
+            box-shadow: 0 0 6px var(--mana); 
+        }
+        
+        .bar-text { 
+            position: absolute; 
+            width: 100%; 
+            text-align: center; 
+            top:0; 
+            font-size: 9px; 
+            font-weight: bold; 
+            line-height: 14px; 
+            text-shadow: 1px 1px black; 
+        }
 
         .btn { 
-            border: 1px solid #444; background: #2a2a35; color: white; padding: 9px; 
-            border-radius: 5px; cursor: pointer; transition: all 0.3s ease; 
-            font-weight: bold; font-size: 0.85em; 
+            border: 1px solid #444; 
+            background: #2a2a35; 
+            color: white; 
+            padding: 10px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            transition: all 0.3s ease; 
+            font-weight: bold; 
+            font-size: 0.85em; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 44px;
         }
-        .btn:hover:not(:disabled) { background: #3a3a45; transform: translateY(-2px); }
-        .btn:active { transform: translateY(0); }
+        
+        .btn:hover:not(:disabled) { 
+            background: #3a3a45; 
+            transform: translateY(-2px); 
+        }
+        
+        .btn:active { 
+            transform: translateY(0); 
+        }
+        
         .btn:disabled { 
             opacity: 0.5; 
             cursor: not-allowed;
             filter: grayscale(70%);
-            transition: all 0.3s ease;
         }
         
         .btn.combat-disabled {
@@ -157,6 +350,7 @@
         .btn-atk { background: #c62828; border-color: #ff5252; }
         .btn-shop { background: #4a148c; border-color: #9c27b0; }
         .btn-craft { background: #5d4037; border-color: #8d6e63; }
+        .btn-upgrade { background: #006064; border-color: #00bcd4; }
 
         .grid-list { 
             display: grid; 
@@ -164,6 +358,7 @@
             gap: 4px;
             align-items: stretch;
         }
+        
         .item-slot { 
             aspect-ratio: 1; 
             border: 2px solid var(--panel-border); 
@@ -181,69 +376,148 @@
             width: 100%;
             padding: 2px;
             transition: all 0.2s ease;
+            overflow: hidden;
         }
+        
         .item-slot:hover {
             transform: scale(1.05);
             border-color: var(--accent);
         }
+        
         .item-slot.r-common { border-color: var(--r-common); }
         .item-slot.r-rare { border-color: var(--r-rare); box-shadow: inset 0 0 4px rgba(33,150,243,0.3); }
         .item-slot.r-epic { border-color: var(--r-epic); box-shadow: inset 0 0 4px rgba(156,39,176,0.3); }
         .item-slot.r-legend { border-color: var(--r-legend); box-shadow: 0 0 6px rgba(255,171,0,0.4); }
         .item-slot.r-mythic { border-color: var(--r-mythic); box-shadow: 0 0 8px rgba(255,64,129,0.6); }
         
+        /* 強化等級標記 */
+        .item-slot.enhanced::after {
+            content: attr(data-enhance);
+            position: absolute;
+            top: 1px;
+            right: 1px;
+            background: linear-gradient(135deg, #ff9800, #ff5722);
+            color: white;
+            font-size: 9px;
+            font-weight: bold;
+            padding: 1px 3px;
+            border-radius: 3px;
+            min-width: 15px;
+            text-align: center;
+        }
+        
         .category-potion { border-left: 3px solid var(--category-potion); }
         .category-weapon { border-left: 3px solid var(--category-weapon); }
         .category-armor { border-left: 3px solid var(--category-armor); }
         .category-material { border-left: 3px solid var(--category-material); }
 
-        .shop-page, .forge-page { 
-            display: none; flex-direction: column; height: 100%; 
-            width: 100%; overflow: hidden;
+        .shop-page, .forge-page, .upgrade-page { 
+            display: none; 
+            flex-direction: column; 
+            height: 100%; 
+            width: 100%; 
+            overflow: hidden;
         }
-        .shop-page.active, .forge-page.active { display: flex; }
+        
+        .shop-page.active, .forge-page.active, .upgrade-page.active { 
+            display: flex; 
+        }
         
         .stage-page { display: none; }
         .stage-page.active { display: flex; flex-direction: column; min-height: 0; }
         
         .shop-category-tabs, .bag-category-tabs { 
-            display: flex; gap: 4px; margin-bottom: 10px; 
+            display: flex; 
+            gap: 4px; 
+            margin-bottom: 10px; 
             flex-shrink: 0;
             flex-wrap: wrap;
         }
+        
         .shop-category-tabs button, .bag-category-tabs button { 
-            flex: 1; padding: 6px; font-size: 0.8em; 
+            flex: 1; 
+            padding: 6px; 
+            font-size: 0.8em; 
             min-width: 60px;
         }
         
-        .shop-grid { 
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; 
+        .shop-grid, .upgrade-list { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 8px; 
             overflow-y: auto; 
             flex: 1;
             padding-right: 4px;
             padding-bottom: 15px;
             margin-bottom: 10px;
         }
+        
         .shop-category {
             display: none;
         }
+        
         .shop-category.active {
             display: grid;
         }
-        .shop-card { 
-            background: #252530; border: 1px solid #444; padding: 8px; 
-            border-radius: 5px; cursor: pointer; transition: 0.2s; 
-            display: flex; flex-direction: column;
+        
+        .shop-card, .upgrade-card { 
+            background: #252530; 
+            border: 1px solid #444; 
+            padding: 8px; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            transition: 0.2s; 
+            display: flex; 
+            flex-direction: column;
         }
-        .shop-card:hover { transform: translateY(-2px); border-color: var(--accent); }
-        .shop-card-icon { font-size: 1.8em; margin-bottom: 5px; text-align: center; }
-        .shop-card-name { font-weight: bold; font-size: 0.8em; margin-bottom: 3px; }
-        .shop-card-desc { font-size: 0.65em; color: #999; margin-bottom: 6px; flex-grow: 1; }
-        .shop-card-footer { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
-        .shop-card-price { color: #ffd700; font-weight: bold; font-size: 0.85em; }
+        
+        .shop-card:hover, .upgrade-card:hover { 
+            transform: translateY(-2px); 
+            border-color: var(--accent); 
+        }
+        
+        .shop-card-icon, .upgrade-card-icon { 
+            font-size: 1.8em; 
+            margin-bottom: 5px; 
+            text-align: center; 
+        }
+        
+        .shop-card-name, .upgrade-card-name { 
+            font-weight: bold; 
+            font-size: 0.8em; 
+            margin-bottom: 3px; 
+        }
+        
+        .shop-card-desc, .upgrade-card-desc { 
+            font-size: 0.65em; 
+            color: #999; 
+            margin-bottom: 6px; 
+            flex-grow: 1; 
+        }
+        
+        .shop-card-footer, .upgrade-card-footer { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-top: auto; 
+        }
+        
+        .shop-card-price, .upgrade-card-price { 
+            color: #ffd700; 
+            font-weight: bold; 
+            font-size: 0.85em; 
+        }
 
-        .forge-page { display: none; flex-direction: column; height: 100%; }
-        .forge-page.active { display: flex; }
+        .forge-page { 
+            display: none; 
+            flex-direction: column; 
+            height: 100%; 
+        }
+        
+        .forge-page.active { 
+            display: flex; 
+        }
+        
         .recipe-list { 
             overflow-y: auto; 
             flex: 1;
@@ -251,32 +525,124 @@
             padding-bottom: 15px;
             margin-bottom: 10px;
         }
-        .recipe-card { background: #252530; border: 1px solid #444; padding: 10px; border-radius: 6px; margin-bottom: 8px; cursor: pointer; transition: 0.2s; }
-        .recipe-card:hover { border-color: var(--accent); }
-        .recipe-card.available { background: rgba(76, 175, 80, 0.1); border-color: var(--success); }
-        .recipe-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
-        .recipe-icon { font-size: 1.6em; }
-        .recipe-name { font-weight: bold; font-size: 0.9em; }
-        .recipe-desc { color: #aaa; font-size: 0.75em; margin-bottom: 8px; }
-        .recipe-materials { display: flex; flex-wrap: wrap; gap: 6px; }
-        .material-item { display: flex; align-items: center; gap: 4px; background: rgba(0,0,0,0.3); padding: 3px 6px; border-radius: 4px; font-size: 0.8em; }
+        
+        .recipe-card { 
+            background: #252530; 
+            border: 1px solid #444; 
+            padding: 10px; 
+            border-radius: 6px; 
+            margin-bottom: 8px; 
+            cursor: pointer; 
+            transition: 0.2s; 
+        }
+        
+        .recipe-card:hover { 
+            border-color: var(--accent); 
+        }
+        
+        .recipe-card.available { 
+            background: rgba(76, 175, 80, 0.1); 
+            border-color: var(--success); 
+        }
+        
+        .recipe-header { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            margin-bottom: 8px; 
+        }
+        
+        .recipe-icon { 
+            font-size: 1.6em; 
+        }
+        
+        .recipe-name { 
+            font-weight: bold; 
+            font-size: 0.9em; 
+        }
+        
+        .recipe-desc { 
+            color: #aaa; 
+            font-size: 0.75em; 
+            margin-bottom: 8px; 
+        }
+        
+        .recipe-materials { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 6px; 
+        }
+        
+        .material-item { 
+            display: flex; 
+            align-items: center; 
+            gap: 4px; 
+            background: rgba(0,0,0,0.3); 
+            padding: 3px 6px; 
+            border-radius: 4px; 
+            font-size: 0.8em; 
+        }
+        
         .material-item.has-enough { color: var(--success); }
         .material-item.not-enough { opacity: 0.5; }
 
-        @keyframes floatUp { 0% { opacity: 1; transform: translateY(0); } 100% { opacity: 0; transform: translateY(-60px); } }
-        .floating-text { position: absolute; font-size: 2em; font-weight: bold; animation: floatUp 1s forwards; z-index: 100; pointer-events: none; }
+        @keyframes floatUp { 
+            0% { opacity: 1; transform: translateY(0); } 
+            100% { opacity: 0; transform: translateY(-60px); } 
+        }
+        
+        .floating-text { 
+            position: absolute; 
+            font-size: 2em; 
+            font-weight: bold; 
+            animation: floatUp 1s forwards; 
+            z-index: 100; 
+            pointer-events: none; 
+        }
+        
         .shake { animation: shake 0.3s; }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+        
+        @keyframes shake { 
+            0%, 100% { transform: translateX(0); } 
+            25% { transform: translateX(-8px); } 
+            75% { transform: translateX(8px); } 
+        }
 
-        .modal-overlay { position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); display:none; align-items:center; justify-content:center; z-index:1000; }
-        .modal-box { background: var(--panel-bg); padding: 15px; border-radius: 10px; border: 2px solid #555; width: 90%; max-width: 400px; text-align: center; max-height: 80vh; overflow-y: auto; }
+        .modal-overlay { 
+            position: fixed; 
+            top:0; left:0; 
+            width:100%; 
+            height:100%; 
+            background:rgba(0,0,0,0.9); 
+            display:none; 
+            align-items:center; 
+            justify-content:center; 
+            z-index:1000; 
+        }
+        
+        .modal-box { 
+            background: var(--panel-bg); 
+            padding: 20px; 
+            border-radius: 10px; 
+            border: 2px solid #555; 
+            width: 90%; 
+            max-width: 400px; 
+            text-align: center; 
+            max-height: 80vh; 
+            overflow-y: auto; 
+        }
 
         .tabs-container { 
-            display: flex; gap: 4px; margin-bottom: 8px; 
+            display: flex; 
+            gap: 4px; 
+            margin-bottom: 8px; 
             flex-shrink: 0;
         }
+        
         .tabs-container button { 
-            flex: 1; padding: 5px; font-size: 0.75em; 
+            flex: 1; 
+            padding: 5px; 
+            font-size: 0.75em; 
             height: 30px;
         }
         
@@ -325,10 +691,30 @@
             display: block;
         }
 
-        .boss-warning { background: linear-gradient(135deg, rgba(255,171,0,0.2), rgba(255,107,0,0.2)); border: 2px solid #ffab00; padding: 8px; border-radius: 6px; margin-bottom: 8px; text-align: center; }
-        .boss-warning-title { color: #ffab00; font-weight: bold; font-size: 0.9em; }
+        .boss-warning { 
+            background: linear-gradient(135deg, rgba(255,171,0,0.2), rgba(255,107,0,0.2)); 
+            border: 2px solid #ffab00; 
+            padding: 8px; 
+            border-radius: 6px; 
+            margin-bottom: 8px; 
+            text-align: center; 
+        }
+        
+        .boss-warning-title { 
+            color: #ffab00; 
+            font-weight: bold; 
+            font-size: 0.9em; 
+        }
 
-        .class-card { padding:12px; text-align:left; height:auto; display:flex; gap:10px; align-items:flex-start; cursor:pointer; }
+        .class-card { 
+            padding:12px; 
+            text-align:left; 
+            height:auto; 
+            display:flex; 
+            gap:10px; 
+            align-items:flex-start; 
+            cursor:pointer; 
+        }
 
         ::-webkit-scrollbar {
             width: 5px;
@@ -361,8 +747,7 @@
         @keyframes pulse {
             0% { opacity: 0.6; }
             50% { opacity: 1; }
-            100% { opacity: 0.6;
-            }
+            100% { opacity: 0.6; }
         }
         
         .equipment-info {
@@ -382,13 +767,45 @@
         .equipment-item:last-child {
             border-bottom: none;
         }
+        
+        /* 強化成功特效 */
+        @keyframes enhanceGlow {
+            0% { box-shadow: 0 0 5px #ff9800; }
+            50% { box-shadow: 0 0 20px #ff9800; }
+            100% { box-shadow: 0 0 5px #ff9800; }
+        }
+        
+        .enhance-success {
+            animation: enhanceGlow 1s ease-in-out;
+        }
+        
+        .enhance-level {
+            color: #ff9800;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        /* 觸控優化 */
+        @media (hover: none) {
+            .btn:hover:not(:disabled) {
+                transform: none;
+            }
+            
+            .item-slot:hover {
+                transform: none;
+            }
+            
+            .shop-card:hover, .upgrade-card:hover, .recipe-card:hover {
+                transform: none;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div id="game-container">
     <header class="panel header">
-        <div style="font-size:1.2em; font-weight:bold; color:var(--accent);">⚔️ 幻想冒險 <span style="font-size:0.6em;">V6.0</span></div>
+        <div style="font-size:1.2em; font-weight:bold; color:var(--accent);">⚔️ 幻想冒險 <span style="font-size:0.6em;">V7.0</span></div>
         <div style="font-size:0.9em;">Lv.<span id="ui-level">1</span> | 深度: <span id="ui-depth">0</span> 層 | 金幣: <span id="ui-gold" style="color:#ffd700">50</span> G</div>
     </header>
 
@@ -477,6 +894,14 @@
             </div>
             <div id="recipe-list" class="recipe-list"></div>
         </div>
+
+        <div id="upgrade-page" class="upgrade-page">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                <h2 style="color:var(--accent); margin:0; font-size:1.1em;">🔧 進化台</h2>
+                <button class="btn" onclick="Game.closeUpgrade()" style="padding:5px 10px; font-size:0.75em;">← 返回</button>
+            </div>
+            <div id="upgrade-list" class="upgrade-list"></div>
+        </div>
     </main>
 
     <section class="control-area">
@@ -490,11 +915,12 @@
             <button id="btn-attack" class="btn btn-atk" onclick="Combat.playerAttack()" disabled>⚔️ 攻擊</button>
             <button id="btn-flee" class="btn" onclick="Combat.flee()" disabled>🏃 逃跑</button>
         </div>
-        <div class="panel" style="display:grid; grid-template-columns:1fr 1fr; gap:5px; padding:5px;">
+        <div class="panel" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:5px; padding:5px;">
             <button id="btn-shop" class="btn btn-shop" onclick="Game.openShop()">🏪 商店</button>
             <button id="btn-craft" class="btn btn-craft" onclick="Game.openForge()">⚒️ 鍛造</button>
+            <button id="btn-upgrade" class="btn btn-upgrade" onclick="Game.openUpgrade()">🔧 進化</button>
         </div>
-        <div id="combat-warning" style="display: none; color: #ff9800; font-size: 0.75em; text-align: center; margin-top: 5px;">戰鬥中無法進入商店或鍛造</div>
+        <div id="combat-warning" style="display: none; color: #ff9800; font-size: 0.75em; text-align: center; margin-top: 5px;">戰鬥中無法進入商店、鍛造或進化</div>
     </section>
 
     <aside class="panel" style="min-height: 0; overflow: hidden; display: flex; flex-direction: column;">
@@ -665,19 +1091,19 @@ const DB = {
         "大型藍藥水": { type: "potion", category: "potion", effect: "mp", val: 300, price: 80, icon: "💧", r: "epic", desc: "恢復 300 MP" },
         "全恢復藥水": { type: "potion", category: "potion", effect: "both", val: 999, price: 200, icon: "🌟", r: "epic", desc: "恢復全部HP和MP" },
         
-        // 武器類
+        // 武器類 (新增百分比武器)
         "木劍": { type: "weapon", category: "weapon", atk: 10, price: 30, icon: "🪵", r: "common", desc: "ATK +10" },
         "鐵劍": { type: "weapon", category: "weapon", atk: 25, price: 80, icon: "🗡️", r: "common", desc: "ATK +25" },
         "鋼鐵長劍": { type: "weapon", category: "weapon", atk: 45, price: 150, icon: "⚔️", r: "rare", desc: "ATK +45" },
         "銀製長劍": { type: "weapon", category: "weapon", atk: 65, price: 250, icon: "🔪", r: "rare", desc: "ATK +65" },
         "魔力法杖": { type: "weapon", category: "weapon", atk: 40, price: 180, icon: "🪄", r: "rare", desc: "ATK +40 (魔法加成)" },
-        "火焰劍": { type: "weapon", category: "weapon", atk: 85, price: 400, icon: "🔥🗡️", r: "epic", desc: "ATK +85 (火焰屬性)" },
-        "冰霜之刃": { type: "weapon", category: "weapon", atk: 90, price: 450, icon: "❄️🗡️", r: "epic", desc: "ATK +90 (冰霜屬性)" },
-        "英雄之刃": { type: "weapon", category: "weapon", atk: 120, price: 800, icon: "✨", r: "epic", desc: "ATK +120" },
-        "聖劍艾克斯": { type: "weapon", category: "weapon", atk: 200, price: 2000, icon: "🔱", r: "legend", desc: "ATK +200 (神聖屬性)" },
-        "龍牙劍": { type: "weapon", category: "weapon", atk: 180, price: 1500, icon: "🐉🗡️", r: "legend", desc: "ATK +180 (龍族之力)" },
+        "火焰劍": { type: "weapon", category: "weapon", atk: 85, atkPercent: 5, price: 400, icon: "🔥🗡️", r: "epic", desc: "ATK +85，攻擊力+5%" },
+        "冰霜之刃": { type: "weapon", category: "weapon", atk: 90, atkPercent: 8, price: 450, icon: "❄️🗡️", r: "epic", desc: "ATK +90，攻擊力+8%" },
+        "英雄之刃": { type: "weapon", category: "weapon", atk: 120, atkPercent: 10, price: 800, icon: "✨", r: "epic", desc: "ATK +120，攻擊力+10%" },
+        "聖劍艾克斯": { type: "weapon", category: "weapon", atk: 200, atkPercent: 15, price: 2000, icon: "🔱", r: "legend", desc: "ATK +200，攻擊力+15%" },
+        "龍牙劍": { type: "weapon", category: "weapon", atk: 180, atkPercent: 12, price: 1500, icon: "🐉🗡️", r: "legend", desc: "ATK +180，攻擊力+12%" },
         
-        // 盔甲類 (新增)
+        // 盔甲類
         "布衣": { type: "armor", category: "armor", hp: 20, def: 1, price: 40, icon: "👕", r: "common", desc: "HP +20, DEF +1" },
         "皮甲": { type: "armor", category: "armor", hp: 50, def: 3, price: 100, icon: "🧥", r: "common", desc: "HP +50, DEF +3" },
         "鎖子甲": { type: "armor", category: "armor", hp: 100, def: 5, price: 250, icon: "🥼", r: "rare", desc: "HP +100, DEF +5" },
@@ -708,6 +1134,7 @@ const DB = {
         "天使之羽": { type: "material", category: "material", price: 250, icon: "👼", r: "legend", desc: "天使的純白羽毛" },
         "星辰碎片": { type: "material", category: "material", price: 300, icon: "⭐", r: "legend", desc: "墜落星辰的碎片" },
         "神之血": { type: "material", category: "material", price: 500, icon: "🩸", r: "mythic", desc: "神明的血液" },
+        "強化寶石": { type: "material", category: "material", price: 100, icon: "💎", r: "rare", desc: "用於強化裝備" },
         
         // 護符類
         "力量護符": { type: "buff", category: "material", stat: "atk", val: 10, price: 200, icon: "💍", r: "rare", desc: "永久 ATK +10" },
@@ -717,7 +1144,7 @@ const DB = {
         "暴擊寶珠": { type: "buff", category: "material", stat: "crit", val: 8, price: 250, icon: "✨", r: "epic", desc: "暴擊率 +8%" }
     },
     
-    // 合成配方 (新增百分比裝備)
+    // 合成配方
     recipes: [
         {
             id: 1,
@@ -771,7 +1198,7 @@ const DB = {
             name: "火焰劍",
             icon: "🔥🗡️",
             result: "火焰劍",
-            desc: "附魔火焰之劍，增加85點攻擊力",
+            desc: "附魔火焰之劍，增加85點攻擊力和5%攻擊力",
             materials: [
                 { name: "鐵礦石", amount: 10 },
                 { name: "火焰之心", amount: 3 },
@@ -784,7 +1211,7 @@ const DB = {
             icon: "🌿🛡️",
             result: "生命之源護甲",
             type: "armor",
-            hpPercent: 15, // 增加15%最大生命值
+            hpPercent: 15,
             def: 8,
             price: 0,
             r: "mythic",
@@ -802,7 +1229,7 @@ const DB = {
             icon: "♾️🛡️",
             result: "不朽戰甲",
             type: "armor",
-            hpPercent: 25, // 增加25%最大生命值
+            hpPercent: 25,
             def: 15,
             price: 0,
             r: "mythic",
@@ -819,15 +1246,53 @@ const DB = {
             name: "聖劍艾克斯",
             icon: "🔱",
             result: "聖劍艾克斯",
-            desc: "神聖傳說之劍，增加200點攻擊力",
+            desc: "神聖傳說之劍，增加200點攻擊力和15%攻擊力",
             materials: [
                 { name: "天使之羽", amount: 2 },
                 { name: "星辰碎片", amount: 3 },
                 { name: "金礦石", amount: 8 },
                 { name: "魔法結晶", amount: 5 }
             ]
+        },
+        {
+            id: 9,
+            name: "神怒之刃",
+            icon: "⚡🗡️",
+            result: "神怒之刃",
+            type: "weapon",
+            atk: 150,
+            atkPercent: 20,
+            price: 0,
+            r: "mythic",
+            desc: "神明憤怒的武器，增加150點攻擊力和20%攻擊力",
+            materials: [
+                { name: "神之血", amount: 5 },
+                { name: "星辰碎片", amount: 10 },
+                { name: "龍鱗", amount: 15 },
+                { name: "鳳凰之羽", amount: 8 }
+            ]
         }
-    ]
+    ],
+    
+    // 強化規則
+    enhancementRules: {
+        // 每次強化增加的屬性
+        weapon: {
+            atk: 5, // 每次強化增加5點攻擊力
+            atkPercent: 1, // 每次強化增加1%攻擊力
+            costMultiplier: 100, // 基礎金幣消耗
+            materialCost: 2, // 每次強化需要的強化寶石數量
+            successRate: [100, 90, 80, 70, 60, 50, 40, 30, 20, 10] // 強化等級0-9的成功率
+        },
+        armor: {
+            hp: 20, // 每次強化增加20HP
+            def: 2, // 每次強化增加2點防禦
+            hpPercent: 0.5, // 每次強化增加0.5%生命值
+            costMultiplier: 80,
+            materialCost: 2,
+            successRate: [100, 90, 80, 70, 60, 50, 40, 30, 20, 10]
+        }
+    }
 };
 
 // 玩家狀態
@@ -837,9 +1302,11 @@ const Player = {
     depth: 0, level: 1, exp: 0, maxExp: 100,
     bag: [], weapon: null, armor: null, class: "",
     materials: {},
-    baseMaxHp: 100, // 用於計算百分比加成的基礎生命值
-    equipmentHpBonus: 0, // 裝備提供的固定HP加成
-    equipmentHpPercent: 0 // 裝備提供的百分比HP加成
+    baseMaxHp: 100,
+    baseAtk: 10,
+    equipmentHpBonus: 0,
+    equipmentHpPercent: 0,
+    equipmentAtkPercent: 0
 };
 
 // 遊戲主邏輯
@@ -856,6 +1323,7 @@ const Game = {
             Player.maxHp = 180; Player.hp = 180; 
             Player.baseMaxHp = 180;
             Player.atk = 12; Player.def = 3; 
+            Player.baseAtk = 12;
             Player.maxMp = 80; Player.mp = 80; 
         }
         else if(clsId === 'thief'){ 
@@ -863,6 +1331,7 @@ const Game = {
             Player.maxHp = 110; Player.hp = 110;
             Player.baseMaxHp = 110;
             Player.atk = 18; Player.crit = 15; 
+            Player.baseAtk = 18;
             Player.maxMp = 100; Player.mp = 100; 
         }
         else if(clsId === 'mage'){ 
@@ -870,6 +1339,7 @@ const Game = {
             Player.maxHp = 90; Player.hp = 90;
             Player.baseMaxHp = 90;
             Player.atk = 10; 
+            Player.baseAtk = 10;
             Player.maxMp = 200; Player.mp = 200; 
         }
         else if(clsId === 'ranger'){ 
@@ -877,6 +1347,7 @@ const Game = {
             Player.maxHp = 130; Player.hp = 130;
             Player.baseMaxHp = 130;
             Player.atk = 16; Player.crit = 12; 
+            Player.baseAtk = 16;
             Player.maxMp = 120; Player.mp = 120; 
         }
         
@@ -892,6 +1363,7 @@ const Game = {
         Player.materials = {};
         Player.equipmentHpBonus = 0;
         Player.equipmentHpPercent = 0;
+        Player.equipmentAtkPercent = 0;
         Game.bossCount = 0;
         Game.currentPage = "adventure";
         isCombatAction = false;
@@ -900,6 +1372,7 @@ const Game = {
         
         document.getElementById('start-modal').style.display = 'none';
         this.addItem("小型紅藥水");
+        this.addItem("強化寶石", 5); // 給玩家一些初始強化寶石
         this.next();
     },
 
@@ -917,8 +1390,13 @@ const Game = {
         document.getElementById('adventure-page').classList.remove('active');
         document.getElementById('shop-page').classList.remove('active');
         document.getElementById('forge-page').classList.remove('active');
+        document.getElementById('upgrade-page').classList.remove('active');
         
         document.getElementById(page + '-page').classList.add('active');
+        
+        if (page === 'upgrade') {
+            UI.renderUpgrade();
+        }
         
         this.updateButtons();
     },
@@ -931,25 +1409,30 @@ const Game = {
         document.getElementById('btn-attack').disabled = !inCombat || !isAdventure;
         document.getElementById('btn-flee').disabled = !inCombat || !isAdventure;
         
-        // 戰鬥中特殊處理商店和鍛造按鈕
+        // 戰鬥中特殊處理商店、鍛造和進化按鈕
         const shopBtn = document.getElementById('btn-shop');
         const craftBtn = document.getElementById('btn-craft');
+        const upgradeBtn = document.getElementById('btn-upgrade');
         
         shopBtn.disabled = inCombat;
         craftBtn.disabled = inCombat;
+        upgradeBtn.disabled = inCombat;
         
         if (inCombat) {
             shopBtn.classList.add('combat-disabled');
             craftBtn.classList.add('combat-disabled');
+            upgradeBtn.classList.add('combat-disabled');
             document.getElementById('combat-warning').style.display = 'block';
         } else {
             shopBtn.classList.remove('combat-disabled');
             craftBtn.classList.remove('combat-disabled');
+            upgradeBtn.classList.remove('combat-disabled');
             document.getElementById('combat-warning').style.display = 'none';
         }
         
         shopBtn.innerHTML = inCombat ? '🏪 商店<br><small style="font-size:0.6em">戰鬥中</small>' : '🏪 商店';
         craftBtn.innerHTML = inCombat ? '⚒️ 鍛造<br><small style="font-size:0.6em">戰鬥中</small>' : '⚒️ 鍛造';
+        upgradeBtn.innerHTML = inCombat ? '🔧 進化<br><small style="font-size:0.6em">戰鬥中</small>' : '🔧 進化';
     },
 
     openShop() {
@@ -971,6 +1454,16 @@ const Game = {
     },
 
     closeForge() {
+        this.showPage("adventure");
+    },
+
+    openUpgrade() {
+        if (this.state === 'combat') return;
+        this.showPage("upgrade");
+        UI.log("進入了進化台");
+    },
+
+    closeUpgrade() {
         this.showPage("adventure");
     },
 
@@ -1022,9 +1515,16 @@ const Game = {
         UI.update();
     },
 
-    addItem(name) {
-        Player.bag.push({ name, ...DB.items[name] });
-        UI.log(`獲得: ${name}`);
+    addItem(name, count = 1) {
+        if (count === 1) {
+            Player.bag.push({ name, ...DB.items[name], enhanceLevel: 0 });
+            UI.log(`獲得: ${name}`);
+        } else {
+            for (let i = 0; i < count; i++) {
+                Player.bag.push({ name, ...DB.items[name], enhanceLevel: 0 });
+            }
+            UI.log(`獲得: ${name} x${count}`);
+        }
         UI.update();
     },
 
@@ -1082,7 +1582,7 @@ const Game = {
             this.removeMaterial(mat.name, mat.amount);
         }
         
-        // 檢查是否為特殊裝備（百分比裝備）
+        // 檢查是否為特殊裝備
         if (recipe.result in DB.items) {
             this.addItem(recipe.result);
         } else {
@@ -1098,7 +1598,9 @@ const Game = {
                 hpPercent: recipe.hpPercent || 0,
                 def: recipe.def || 0,
                 atk: recipe.atk || 0,
-                isSpecial: true
+                atkPercent: recipe.atkPercent || 0,
+                isSpecial: true,
+                enhanceLevel: 0
             };
             Player.bag.push(specialItem);
         }
@@ -1106,6 +1608,83 @@ const Game = {
         UI.log(`成功鍛造了 ${recipe.name}！`);
         UI.renderRecipes();
         return true;
+    },
+
+    enhanceItem(itemIndex) {
+        const item = Player.bag[itemIndex];
+        if (!item || (item.type !== 'weapon' && item.type !== 'armor')) {
+            UI.log("無法強化此物品");
+            return false;
+        }
+        
+        // 檢查強化等級上限
+        if (item.enhanceLevel >= 9) {
+            UI.log("此物品已達到最大強化等級");
+            return false;
+        }
+        
+        const rules = DB.enhancementRules[item.type];
+        const cost = rules.costMultiplier * (item.enhanceLevel + 1);
+        const materialNeeded = rules.materialCost;
+        const successRate = rules.successRate[item.enhanceLevel];
+        
+        // 檢查資源
+        if (Player.gold < cost) {
+            UI.log(`金幣不足！需要 ${cost} G`);
+            return false;
+        }
+        
+        if (this.getMaterialCount("強化寶石") < materialNeeded) {
+            UI.log(`強化寶石不足！需要 ${materialNeeded} 個`);
+            return false;
+        }
+        
+        // 扣除資源
+        Player.gold -= cost;
+        this.removeMaterial("強化寶石", materialNeeded);
+        
+        // 計算成功率
+        const success = Math.random() * 100 < successRate;
+        
+        if (success) {
+            // 強化成功
+            item.enhanceLevel++;
+            
+            // 增加屬性
+            if (item.type === 'weapon') {
+                item.atk = (item.atk || 0) + rules.atk;
+                item.atkPercent = (item.atkPercent || 0) + rules.atkPercent;
+            } else if (item.type === 'armor') {
+                item.hp = (item.hp || 0) + rules.hp;
+                item.def = (item.def || 0) + rules.def;
+                item.hpPercent = (item.hpPercent || 0) + rules.hpPercent;
+            }
+            
+            UI.log(`${item.name} 強化成功！現在是 +${item.enhanceLevel}`);
+            
+            // 更新裝備中的物品
+            if (Player.weapon && Player.weapon.name === item.name) {
+                Player.weapon = {...item};
+                this.updatePlayerStats();
+            }
+            if (Player.armor && Player.armor.name === item.name) {
+                Player.armor = {...item};
+                this.updatePlayerStats();
+            }
+            
+            // 顯示特效
+            const itemSlot = document.querySelectorAll('.item-slot')[itemIndex];
+            if (itemSlot) {
+                itemSlot.classList.add('enhance-success');
+                setTimeout(() => itemSlot.classList.remove('enhance-success'), 1000);
+            }
+        } else {
+            UI.log(`${item.name} 強化失敗！`);
+        }
+        
+        UI.renderUpgrade();
+        UI.update();
+        return success;
     },
 
     gainExp(amount) {
@@ -1118,24 +1697,32 @@ const Game = {
             
             // 職業成長
             if(Player.class === "騎士") { 
-                Player.baseMaxHp += 25; Player.atk += 4; Player.def += 2; 
+                Player.baseMaxHp += 25; 
+                Player.baseAtk += 4; 
+                Player.def += 2; 
                 Player.crit += 0.5;
             }
             else if(Player.class === "盜賊") { 
-                Player.baseMaxHp += 15; Player.atk += 6; Player.crit += 2.5; 
+                Player.baseMaxHp += 15; 
+                Player.baseAtk += 6; 
+                Player.crit += 2.5; 
                 Player.def += 1;
             }
             else if(Player.class === "法師") { 
-                Player.baseMaxHp += 10; Player.maxMp += 40; Player.atk += 4; 
+                Player.baseMaxHp += 10; 
+                Player.maxMp += 40; 
+                Player.baseAtk += 4; 
                 Player.crit += 1;
             }
             else if(Player.class === "獵人") { 
-                Player.baseMaxHp += 18; Player.atk += 5; Player.crit += 1.5; 
+                Player.baseMaxHp += 18; 
+                Player.baseAtk += 5; 
+                Player.crit += 1.5; 
                 Player.def += 1.5;
             }
             
             // 重新計算最大生命值（包括裝備加成）
-            this.updatePlayerMaxHp();
+            this.updatePlayerStats();
             Player.hp = Player.maxHp;
             Player.mp = Player.maxMp;
             UI.log(`⭐ 升級到 Lv.${Player.level}！`);
@@ -1143,13 +1730,22 @@ const Game = {
         UI.update();
     },
     
-    // 更新玩家的最大生命值（考慮基礎值、裝備固定加成和百分比加成）
-    updatePlayerMaxHp() {
+    // 更新玩家的屬性（考慮基礎值、裝備固定加成和百分比加成）
+    updatePlayerStats() {
+        // 計算生命值
         const baseHp = Player.baseMaxHp;
-        const fixedBonus = Player.equipmentHpBonus;
-        const percentBonus = Player.equipmentHpPercent / 100;
+        const fixedHpBonus = Player.equipmentHpBonus;
+        const percentHpBonus = Player.equipmentHpPercent / 100;
+        Player.maxHp = Math.floor(baseHp * (1 + percentHpBonus)) + fixedHpBonus;
         
-        Player.maxHp = Math.floor(baseHp * (1 + percentBonus)) + fixedBonus;
+        // 計算攻擊力
+        const baseAtk = Player.baseAtk;
+        const fixedAtkBonus = Player.weapon ? Player.weapon.atk : 0;
+        const percentAtkBonus = Player.equipmentAtkPercent / 100;
+        Player.atk = Math.floor(baseAtk * (1 + percentAtkBonus)) + fixedAtkBonus;
+        
+        // 計算防禦力
+        Player.def = Player.armor ? Player.armor.def : 0;
         
         // 確保當前HP不超過最大HP
         if (Player.hp > Player.maxHp) {
@@ -1184,7 +1780,7 @@ const Combat = {
         if (Game.state !== 'combat' || isCombatAction || Game.currentPage !== 'adventure') return;
         
         isCombatAction = true;
-        const base = Player.atk + (Player.weapon ? Player.weapon.atk : 0);
+        const base = Player.atk;
         const isCrit = Math.random() * 100 < Player.crit;
         const dmg = Math.floor(isCrit ? base * 2 : base);
         this.dealDamage(dmg, isCrit);
@@ -1200,7 +1796,7 @@ const Combat = {
         if ((Game.state !== 'combat' && id !== 2) || isCombatAction || Game.currentPage !== 'adventure') return;
         
         isCombatAction = true;
-        const base = Player.atk + (Player.weapon ? Player.weapon.atk : 0);
+        const base = Player.atk;
         
         if (id === 1 && Player.mp >= 20) {
             Player.mp -= 20;
@@ -1249,7 +1845,7 @@ const Combat = {
             this.win();
             // 戰鬥勝利時掉落素材
             if (Math.random() < 0.7) {
-                const commonMats = ["木材", "鐵礦石", "獸皮", "尖牙", "爪子"];
+                const commonMats = ["木材", "鐵礦石", "獸皮", "尖牙", "爪子", "強化寶石"];
                 const randomMat = commonMats[Math.floor(Math.random() * commonMats.length)];
                 const amount = 1 + Math.floor(Math.random() * 3);
                 Game.addMaterial(randomMat, amount);
@@ -1263,7 +1859,7 @@ const Combat = {
     enemyTurn() {
         if (Game.state !== 'combat') return;
         
-        // 修復：怪物攻擊力就是顯示的數值，不減防禦
+        // 怪物攻擊力就是顯示的數值
         const rawDamage = Game.enemy.atk;
         let finalDamage = rawDamage;
         
@@ -1345,21 +1941,29 @@ const UI = {
         document.getElementById('ui-class').innerText = Player.class;
         
         // 計算總攻擊力（基礎+武器）
-        const totalAtk = Player.atk + (Player.weapon ? Player.weapon.atk : 0);
+        const totalAtk = Player.atk;
         document.getElementById('ui-atk').innerText = totalAtk;
         
         // 計算總防禦力（基礎+盔甲）
-        const totalDef = Player.def + (Player.armor ? Player.armor.def : 0);
+        const totalDef = Player.def;
         document.getElementById('ui-def').innerText = totalDef;
         
         document.getElementById('ui-crit').innerText = Player.crit.toFixed(1) + "%";
         
         // 更新武器顯示
-        document.getElementById('ui-weapon').innerText = Player.weapon ? `武器: ${Player.weapon.name}` : "武器: - 無 -";
+        let weaponName = Player.weapon ? Player.weapon.name : "- 無 -";
+        if (Player.weapon && Player.weapon.enhanceLevel > 0) {
+            weaponName += ` +${Player.weapon.enhanceLevel}`;
+        }
+        document.getElementById('ui-weapon').innerText = `武器: ${weaponName}`;
         document.getElementById('weapon-desc').innerText = Player.weapon ? Player.weapon.desc : "無效果";
         
         // 更新盔甲顯示
-        document.getElementById('ui-armor').innerText = Player.armor ? `盔甲: ${Player.armor.name}` : "盔甲: - 無 -";
+        let armorName = Player.armor ? Player.armor.name : "- 無 -";
+        if (Player.armor && Player.armor.enhanceLevel > 0) {
+            armorName += ` +${Player.armor.enhanceLevel}`;
+        }
+        document.getElementById('ui-armor').innerText = `盔甲: ${armorName}`;
         document.getElementById('armor-desc').innerText = Player.armor ? Player.armor.desc : "無效果";
         
         // 頭像更新
@@ -1386,7 +1990,7 @@ const UI = {
         document.getElementById('skill-2').disabled = (Player.mp < 30) || !canUseSkills;
         document.getElementById('skill-3').disabled = (Player.mp < 60) || !canUseSkills;
 
-        const base = Player.atk + (Player.weapon ? Player.weapon.atk : 0);
+        const base = Player.atk;
         document.getElementById('sk1-val').innerText = `${Math.floor(base * 2.2)} (20MP)`;
         document.getElementById('sk2-val').innerText = `+${Math.floor(Player.maxHp * 0.5)} (30MP)`;
         document.getElementById('sk3-val').innerText = `${Math.floor(base * 4.5)} (60MP)`;
@@ -1478,6 +2082,12 @@ const UI = {
             }
             
             slot.className = `item-slot ${rarityClass} category-${item.category || 'material'}`;
+            
+            // 如果有強化等級，添加強化標記
+            if (item.enhanceLevel > 0) {
+                slot.classList.add('enhanced');
+                slot.setAttribute('data-enhance', `+${item.enhanceLevel}`);
+            }
             
             // 顯示圖標
             slot.innerHTML = `${item.icon}`;
@@ -1583,9 +2193,86 @@ const UI = {
         });
     },
 
+    renderUpgrade() {
+        const upgradeList = document.getElementById('upgrade-list');
+        if (!upgradeList) return;
+        
+        upgradeList.innerHTML = "";
+        
+        // 找出所有可以強化的物品（武器和盔甲）
+        const upgradableItems = Player.bag.filter(item => item.type === 'weapon' || item.type === 'armor');
+        
+        if (upgradableItems.length === 0) {
+            upgradeList.innerHTML = `
+                <div style="grid-column:1/-1; text-align:center; color:#666; padding:20px; font-size:0.9em;">
+                    <div style="font-size:3em; margin-bottom:10px;">🔧</div>
+                    <div>沒有可以強化的裝備</div>
+                    <div style="font-size:0.8em; color:#888; margin-top:10px;">請先獲得武器或盔甲</div>
+                </div>
+            `;
+            return;
+        }
+        
+        upgradableItems.forEach((item, index) => {
+            const originalIndex = Player.bag.indexOf(item);
+            const rules = DB.enhancementRules[item.type];
+            const nextLevel = item.enhanceLevel + 1;
+            const cost = rules.costMultiplier * nextLevel;
+            const materialNeeded = rules.materialCost;
+            const successRate = rules.successRate[item.enhanceLevel];
+            
+            const card = document.createElement('div');
+            card.className = 'upgrade-card';
+            
+            // 計算強化後的屬性
+            let enhancedStats = "";
+            if (item.type === 'weapon') {
+                const newAtk = (item.atk || 0) + rules.atk;
+                const newAtkPercent = (item.atkPercent || 0) + rules.atkPercent;
+                enhancedStats = `攻擊力: ${item.atk || 0} → ${newAtk} (+${rules.atk})<br>攻擊力%: ${item.atkPercent || 0}% → ${newAtkPercent}% (+${rules.atkPercent}%)`;
+            } else if (item.type === 'armor') {
+                const newHp = (item.hp || 0) + rules.hp;
+                const newDef = (item.def || 0) + rules.def;
+                const newHpPercent = (item.hpPercent || 0) + rules.hpPercent;
+                enhancedStats = `生命值: ${item.hp || 0} → ${newHp} (+${rules.hp})<br>防禦力: ${item.def || 0} → ${newDef} (+${rules.def})`;
+                if (item.hpPercent || rules.hpPercent) {
+                    enhancedStats += `<br>生命值%: ${item.hpPercent || 0}% → ${newHpPercent}% (+${rules.hpPercent}%)`;
+                }
+            }
+            
+            card.innerHTML = `
+                <div class="upgrade-card-icon">${item.icon}</div>
+                <div class="upgrade-card-name">${item.name} ${item.enhanceLevel > 0 ? `+${item.enhanceLevel}` : ''}</div>
+                <div class="upgrade-card-desc">${item.desc}</div>
+                <div style="font-size:0.7em; color:#ccc; margin-bottom:8px;">
+                    ${enhancedStats}
+                </div>
+                <div style="font-size:0.7em; color:#ff9800; margin-bottom:8px;">
+                    成功率: ${successRate}% | 消耗: ${cost} G + 強化寶石 x${materialNeeded}
+                </div>
+                <div class="upgrade-card-footer">
+                    <span class="upgrade-card-price">強化等級: ${item.enhanceLevel}/9</span>
+                    <button class="btn" style="padding:3px 6px; font-size:0.65em;" 
+                        onclick="Game.enhanceItem(${originalIndex})" 
+                        ${Player.gold < cost || Game.getMaterialCount("強化寶石") < materialNeeded || item.enhanceLevel >= 9 ? 'disabled' : ''}>
+                        強化
+                    </button>
+                </div>
+            `;
+            
+            upgradeList.appendChild(card);
+        });
+    },
+
     openItemModal(item, index) {
         document.getElementById('m-icon').innerText = item.icon;
-        document.getElementById('m-title').innerText = item.name;
+        
+        // 顯示物品名稱（含強化等級）
+        let itemName = item.name;
+        if (item.enhanceLevel > 0) {
+            itemName += ` +${item.enhanceLevel}`;
+        }
+        document.getElementById('m-title').innerText = itemName;
         
         // 顯示稀有度
         let rarityText = "";
@@ -1608,7 +2295,13 @@ const UI = {
         if (item.isMaterial) {
             statsHTML = `<div>數量: ${item.count}</div>`;
         } else if (item.type === 'weapon') {
-            statsHTML = `<div>攻擊力: +${item.atk}</div>`;
+            statsHTML = `<div>攻擊力: +${item.atk || 0}</div>`;
+            if (item.atkPercent) {
+                statsHTML += `<div>攻擊力加成: +${item.atkPercent}%</div>`;
+            }
+            if (item.enhanceLevel > 0) {
+                statsHTML += `<div class="enhance-level">強化等級: +${item.enhanceLevel}</div>`;
+            }
         } else if (item.type === 'armor') {
             statsHTML = `<div>生命值: +${item.hp || 0}</div>`;
             if (item.hpPercent) {
@@ -1617,6 +2310,9 @@ const UI = {
             statsHTML += `<div>防禦力: +${item.def || 0}</div>`;
             if (item.mp) {
                 statsHTML += `<div>魔力值: +${item.mp}</div>`;
+            }
+            if (item.enhanceLevel > 0) {
+                statsHTML += `<div class="enhance-level">強化等級: +${item.enhanceLevel}</div>`;
             }
         } else if (item.type === 'potion') {
             if (item.effect === 'hp') {
@@ -1639,8 +2335,8 @@ const UI = {
             act.onclick = () => this.closeModal();
         } else {
             // 檢查是否已裝備
-            const isEquippedWeapon = Player.weapon && Player.weapon.name === item.name;
-            const isEquippedArmor = Player.armor && Player.armor.name === item.name;
+            const isEquippedWeapon = Player.weapon && Player.weapon.name === item.name && Player.weapon.enhanceLevel === item.enhanceLevel;
+            const isEquippedArmor = Player.armor && Player.armor.name === item.name && Player.armor.enhanceLevel === item.enhanceLevel;
             const isEquipped = isEquippedWeapon || isEquippedArmor;
             
             if (item.type === 'weapon') {
@@ -1649,6 +2345,8 @@ const UI = {
                     act.onclick = () => {
                         Player.bag.push(Player.weapon);
                         Player.weapon = null;
+                        Player.equipmentAtkPercent = 0;
+                        Game.updatePlayerStats();
                         this.closeModal();
                         UI.log(`卸下了 ${item.name}！`);
                         UI.update();
@@ -1656,9 +2354,21 @@ const UI = {
                 } else {
                     act.innerText = "裝備";
                     act.onclick = () => {
-                        if(Player.weapon) Player.bag.push(Player.weapon);
+                        if(Player.weapon) {
+                            Player.bag.push(Player.weapon);
+                            Player.equipmentAtkPercent = 0;
+                        }
+                        
                         Player.weapon = item;
                         Player.bag.splice(index, 1);
+                        
+                        // 添加武器百分比加成
+                        if (item.atkPercent) {
+                            Player.equipmentAtkPercent = item.atkPercent;
+                        }
+                        
+                        Game.updatePlayerStats();
+                        
                         this.closeModal();
                         UI.log(`裝備了 ${item.name}！`);
                         UI.update();
@@ -1674,9 +2384,8 @@ const UI = {
                         // 移除盔甲加成
                         if (item.hp) Player.equipmentHpBonus -= item.hp;
                         if (item.hpPercent) Player.equipmentHpPercent -= item.hpPercent;
-                        if (item.def) Player.def -= item.def;
                         
-                        Game.updatePlayerMaxHp();
+                        Game.updatePlayerStats();
                         
                         this.closeModal();
                         UI.log(`卸下了 ${item.name}！`);
@@ -1689,7 +2398,6 @@ const UI = {
                             // 移除舊盔甲加成
                             if (Player.armor.hp) Player.equipmentHpBonus -= Player.armor.hp;
                             if (Player.armor.hpPercent) Player.equipmentHpPercent -= Player.armor.hpPercent;
-                            if (Player.armor.def) Player.def -= Player.armor.def;
                             
                             Player.bag.push(Player.armor);
                         }
@@ -1700,9 +2408,8 @@ const UI = {
                         // 添加新盔甲加成
                         if (item.hp) Player.equipmentHpBonus += item.hp;
                         if (item.hpPercent) Player.equipmentHpPercent += item.hpPercent;
-                        if (item.def) Player.def += item.def;
                         
-                        Game.updatePlayerMaxHp();
+                        Game.updatePlayerStats();
                         
                         this.closeModal();
                         UI.log(`裝備了 ${item.name}！`);
@@ -1712,12 +2419,18 @@ const UI = {
             } else if (item.type === 'buff') {
                 act.innerText = "使用";
                 act.onclick = () => {
-                    if (item.stat === 'atk') Player.atk += item.val;
+                    if (item.stat === 'atk') {
+                        Player.baseAtk += item.val;
+                        Player.equipmentAtkPercent = 0; // 重置百分比加成
+                        if (Player.weapon && Player.weapon.atkPercent) {
+                            Player.equipmentAtkPercent = Player.weapon.atkPercent;
+                        }
+                    }
                     else if (item.stat === 'def') Player.def += item.val;
                     else if (item.stat === 'crit') Player.crit += item.val;
                     else if (item.stat === 'maxHp') { 
                         Player.baseMaxHp += item.val;
-                        Game.updatePlayerMaxHp();
+                        Game.updatePlayerStats();
                         Player.hp += item.val;
                     }
                     else if (item.stat === 'maxMp') { 
@@ -1727,6 +2440,7 @@ const UI = {
                     Player.bag.splice(index, 1);
                     this.closeModal();
                     UI.log(`使用了 ${item.name}！`);
+                    Game.updatePlayerStats();
                     UI.update();
                 };
             } else {
@@ -1818,6 +2532,9 @@ const UI = {
 document.addEventListener('DOMContentLoaded', function() {
     UI.switchShopCategory('potion');
     Game.updateButtons();
+    
+    // 手機觸控優化
+    document.addEventListener('touchstart', function() {}, {passive: true});
 });
 </script>
 </body>
