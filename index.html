@@ -806,19 +806,89 @@
 
         /* 左側面板間距修正 */
         aside.panel:first-of-type {
-            padding: 15px !important;
+            padding: 12px !important;
+        }
+
+        @media (max-width: 768px) {
+            aside.panel:first-of-type {
+                padding: 10px !important;
+            }   
+        }
+
+        @media (max-height: 700px) {
+            aside.panel:first-of-type {
+                padding: 10px !important;
+            }
         }
 
         /* 修正經驗、生命、魔力條的間距 */
-        .stat-label {
-            font-size: 0.7em; 
+        aside.panel:first-of-type .stat-label {
+            font-size: 0.65em; 
             color: #888; 
-            margin-top: 8px !important; 
-            margin-bottom: 4px !important;
+            margin-top: 4px; 
+            margin-bottom: 2px;
         }
 
-        .bar-container {
-            margin-bottom: 8px !important;
+        /* 左側面板中的bar-container - 使用相對間距 */
+        aside.panel:first-of-type .bar-container {
+            margin-bottom: 6px;
+            height: 14px; /* 稍微減小高度 */
+        }
+
+        /* 電腦版優化 - 確保在較小屏幕上也能顯示 */
+        @media (min-width: 769px) {
+            aside.panel:first-of-type .stat-label {
+                font-size: 0.6em;
+                margin-top: 3px;
+                margin-bottom: 2px;
+            }
+    
+            aside.panel:first-of-type .bar-container {
+                margin-bottom: 5px;
+                height: 12px;
+            }
+        }
+
+        /* 手機版保持原樣 */
+        @media (max-width: 768px) {
+            aside.panel:first-of-type .stat-label {
+                font-size: 0.6em;
+                margin-top: 3px;
+                margin-bottom: 2px;
+            }
+    
+            aside.panel:first-of-type .bar-container {
+                margin-bottom: 5px;
+                height: 12px;
+            }
+        }
+
+        /* 超小屏幕優化 */
+        @media (max-width: 480px) {
+            aside.panel:first-of-type .stat-label {
+                font-size: 0.55em;
+                margin-top: 2px;
+                margin-bottom: 1px;
+            }
+    
+            aside.panel:first-of-type .bar-container {
+                margin-bottom: 4px;
+                height: 10px;
+            }
+        }
+
+        /* 低高度屏幕優化 */
+        @media (max-height: 700px) {
+            aside.panel:first-of-type .stat-label {
+                font-size: 0.6em;
+                margin-top: 2px;
+                margin-bottom: 1px;
+            }       
+    
+            aside.panel:first-of-type .bar-container {
+                margin-bottom: 4px;
+                height: 10px;
+            }
         }
 
         /* 手機版佈局 */
