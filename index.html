@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>幻想冒險 V7.3</title>
+    <title>幻想冒險 V7.4</title>
     <style>
         :root {
             --bg-dark: #0a0a0e;
@@ -756,6 +756,39 @@
             background: rgba(0,0,0,0.3);
         }
 
+        /* 已裝備標記 */
+        .item-equipped::before {
+            content: "✔";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            background: linear-gradient(135deg, #4caf50, #2e7d32);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 4px;
+            border-radius: 4px;
+            min-width: 18px;
+            text-align: center;
+            z-index: 1;
+        }
+
+        /* 物品堆疊數量顯示 */
+        .item-count {
+            position: absolute;
+            bottom: 2px;
+            right: 2px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 1px 3px;
+            border-radius: 3px;
+            min-width: 16px;
+            text-align: center;
+            line-height: 1.2;
+        }
+
         /* 電腦版背包標籤優化 */
         @media (min-width: 1025px) {
             .bag-category-tabs {
@@ -822,8 +855,10 @@
             .main-stage { 
                 grid-column: 1; 
                 grid-row: 3; 
-                min-height: 220px;
-                max-height: 320px;
+                min-height: 180px;
+                max-height: 220px;
+                justify-content: flex-start;
+                padding-top: 10px;
             }
             
             .control-area { 
@@ -832,7 +867,7 @@
                 grid-template-columns: 1fr;
                 min-height: auto;
                 gap: 5px;
-                max-height: 250px;
+                max-height: 200px;
                 overflow: hidden;
             }
             
@@ -856,14 +891,15 @@
             }
             
             .btn {
-                padding: 14px 10px !important;
-                font-size: 0.9em !important;
-                min-height: 70px;
+                padding: 10px 8px !important;
+                font-size: 0.85em !important;
+                min-height: 60px;
                 line-height: 1.3;
             }
             
             .enemy-sprite {
-                font-size: 4em !important;
+                font-size: 3em !important;
+                margin-bottom: 5px;
             }
             
             .modal-box {
@@ -874,18 +910,18 @@
             }
             
             .panel {
-                padding: 12px !important;
+                padding: 10px !important;
             }
             
             .shop-grid, .recipe-list, .upgrade-list {
-                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)) !important;
+                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
             }
             
             /* 技能按鈕調整 */
             #skill-1, #skill-2, #skill-3 {
-                padding: 8px 4px !important;
-                font-size: 0.8em !important;
-                min-height: 70px;
+                padding: 6px 3px !important;
+                font-size: 0.75em !important;
+                min-height: 60px;
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
@@ -893,20 +929,20 @@
             }
             
             #skill-1 small, #skill-2 small, #skill-3 small {
-                font-size: 0.7em !important;
-                margin-top: 4px;
+                font-size: 0.65em !important;
+                margin-top: 3px;
             }
             
             /* 控制區域按鈕調整 */
             .control-area > .panel {
-                padding: 8px !important;
-                gap: 6px !important;
+                padding: 6px !important;
+                gap: 4px !important;
             }
             
             .control-area > .panel > div {
                 display: grid;
                 grid-template-columns: repeat(3, 1fr);
-                gap: 6px;
+                gap: 4px;
             }
             
             /* 背包標籤調整 */
@@ -914,8 +950,8 @@
                 display: flex;
                 flex-wrap: nowrap;
                 overflow-x: auto;
-                padding-bottom: 8px;
-                gap: 4px;
+                padding-bottom: 6px;
+                gap: 3px;
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
             }
@@ -925,9 +961,9 @@
             }
             
             .bag-category-tabs button {
-                min-width: 70px;
-                padding: 8px 4px !important;
-                font-size: 0.75em !important;
+                min-width: 60px;
+                padding: 6px 3px !important;
+                font-size: 0.7em !important;
                 flex-shrink: 0;
                 white-space: nowrap;
             }
@@ -937,20 +973,52 @@
                 display: flex;
                 flex-wrap: nowrap;
                 overflow-x: auto;
-                padding-bottom: 8px;
-                gap: 4px;
+                padding-bottom: 6px;
+                gap: 3px;
             }
             
             .shop-category-tabs button {
-                min-width: 70px;
-                padding: 8px 4px !important;
-                font-size: 0.75em !important;
+                min-width: 60px;
+                padding: 6px 3px !important;
+                font-size: 0.7em !important;
                 flex-shrink: 0;
             }
             
             .equipment-info {
                 min-height: 100px !important;
                 padding: 6px !important;
+                font-size: 0.75em;
+            }
+            
+            #enemy-panel {
+                position: relative;
+                bottom: 0;
+                left: 0;
+                transform: none;
+                width: 100%;
+                margin-bottom: 5px;
+                padding: 8px;
+            }
+            
+            .boss-warning {
+                position: relative;
+                top: 0;
+                left: 0;
+                transform: none;
+                width: 100%;
+                margin: 5px 0;
+                padding: 8px;
+                font-size: 0.9em;
+            }
+            
+            #event-name {
+                font-size: 1.2em;
+                margin: 5px 0;
+            }
+            
+            #event-desc {
+                font-size: 0.75em;
+                margin: 3px 0;
             }
         }
 
@@ -960,35 +1028,40 @@
             }
             
             .item-slot {
-                min-height: 45px !important;
-                max-height: 55px !important;
-                font-size: 0.85em !important;
-                padding: 6px !important;
+                min-height: 40px !important;
+                max-height: 50px !important;
+                font-size: 0.8em !important;
+                padding: 5px !important;
             }
             
             .btn {
-                padding: 14px 8px !important;
-                font-size: 0.85em !important;
-                min-height: 70px;
+                padding: 8px 4px !important;
+                font-size: 0.8em !important;
+                min-height: 55px;
             }
             
             .enemy-sprite {
-                font-size: 3.5em !important;
+                font-size: 2.5em !important;
             }
             
             .shop-grid, .recipe-list, .upgrade-list {
-                grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)) !important;
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)) !important;
             }
             
             #skill-1, #skill-2, #skill-3 {
-                font-size: 0.75em !important;
-                min-height: 65px;
-                padding: 6px 3px !important;
+                font-size: 0.7em !important;
+                min-height: 55px;
+                padding: 5px 2px !important;
             }
             
             .bag-category-tabs button {
-                min-width: 65px;
-                font-size: 0.7em !important;
+                min-width: 55px;
+                font-size: 0.65em !important;
+            }
+            
+            .main-stage {
+                min-height: 160px;
+                max-height: 200px;
             }
         }
 
@@ -1007,6 +1080,8 @@
             .main-stage { 
                 grid-column: 2; 
                 grid-row: 2; 
+                min-height: 300px;
+                max-height: 350px;
             }
             
             .control-area { 
@@ -1020,12 +1095,12 @@
             }
             
             .control-area > .panel {
-                padding: 10px !important;
+                padding: 8px !important;
             }
             
             #skill-1, #skill-2, #skill-3 {
-                padding: 10px 6px !important;
-                font-size: 0.85em !important;
+                padding: 8px 4px !important;
+                font-size: 0.8em !important;
             }
             
             .bag-category-tabs {
@@ -1038,9 +1113,52 @@
             
             .bag-category-tabs button {
                 min-width: 70px;
-                padding: 8px 4px !important;
-                font-size: 0.8em !important;
+                padding: 6px 3px !important;
+                font-size: 0.75em !important;
                 flex-shrink: 0;
+            }
+        }
+
+        /* 適應不同高度的螢幕 */
+        @media (max-height: 700px) {
+            .main-stage {
+                min-height: 150px !important;
+                max-height: 180px !important;
+            }
+            
+            .enemy-sprite {
+                font-size: 3.5em !important;
+            }
+            
+            .control-area {
+                min-height: 150px !important;
+            }
+            
+            .btn {
+                min-height: 50px !important;
+                padding: 8px !important;
+                font-size: 0.8em !important;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .main-stage {
+                min-height: 130px !important;
+                max-height: 150px !important;
+            }
+            
+            .enemy-sprite {
+                font-size: 3em !important;
+            }
+            
+            .control-area {
+                min-height: 130px !important;
+            }
+            
+            .btn {
+                min-height: 45px !important;
+                padding: 6px !important;
+                font-size: 0.75em !important;
             }
         }
     </style>
@@ -1049,7 +1167,7 @@
 
 <div id="game-container">
     <header class="panel header">
-        <div style="font-size:1.2em; font-weight:bold; color:var(--accent);">⚔️ 幻想冒險 <span style="font-size:0.6em;">V7.3</span></div>
+        <div style="font-size:1.2em; font-weight:bold; color:var(--accent);">⚔️ 幻想冒險 <span style="font-size:0.6em;">V7.4</span></div>
         <div style="font-size:0.9em;">Lv.<span id="ui-level">1</span> | 深度: <span id="ui-depth">0</span> 層 | 金幣: <span id="ui-gold" style="color:#ffd700">50</span> G</div>
     </header>
 
@@ -1503,11 +1621,11 @@
             "神之血": { type: "material", category: "material", price: 500, icon: "🩸", r: "mythic", desc: "神明的血液", craftOnly: true },
             
             // 護符類 - 改為只能通過鍛造獲得 (craftOnly: true)
-            "力量護符": { type: "buff", category: "material", stat: "atk", val: 10, price: 0, icon: "💍", r: "rare", desc: "永久 ATK +10", craftOnly: true },
-            "防禦護符": { type: "buff", category: "material", stat: "def", val: 5, price: 0, icon: "🛡️", r: "rare", desc: "永久 DEF +5", craftOnly: true },
-            "生命護符": { type: "buff", category: "material", stat: "maxHp", val: 50, price: 0, icon: "❤️", r: "rare", desc: "永久 MaxHP +50", craftOnly: true },
-            "魔力護符": { type: "buff", category: "material", stat: "maxMp", val: 30, price: 0, icon: "🌀", r: "rare", desc: "永久 MaxMP +30", craftOnly: true },
-            "暴擊寶珠": { type: "buff", category: "material", stat: "crit", val: 8, price: 0, icon: "✨", r: "epic", desc: "暴擊率 +8%", craftOnly: true },
+            "力量護符": { type: "buff", category: "buff", stat: "atk", val: 10, price: 0, icon: "💍", r: "rare", desc: "永久 ATK +10", craftOnly: true },
+            "防禦護符": { type: "buff", category: "buff", stat: "def", val: 5, price: 0, icon: "🛡️", r: "rare", desc: "永久 DEF +5", craftOnly: true },
+            "生命護符": { type: "buff", category: "buff", stat: "maxHp", val: 50, price: 0, icon: "❤️", r: "rare", desc: "永久 MaxHP +50", craftOnly: true },
+            "魔力護符": { type: "buff", category: "buff", stat: "maxMp", val: 30, price: 0, icon: "🌀", r: "rare", desc: "永久 MaxMP +30", craftOnly: true },
+            "暴擊寶珠": { type: "buff", category: "buff", stat: "crit", val: 3, price: 0, icon: "✨", r: "epic", desc: "暴擊率 +3%", craftOnly: true },
             
             // 上帝模式專屬裝備
             "神怒之刃": { type: "weapon", category: "weapon", atk: 150, atkPercent: 20, price: 0, icon: "⚡🗡️", r: "mythic", desc: "神明憤怒的武器，增加150點攻擊力和20%攻擊力", godOnly: true },
@@ -1694,7 +1812,7 @@
                 name: "暴擊寶珠",
                 icon: "✨",
                 result: "暴擊寶珠",
-                desc: "永久增加8%暴擊率",
+                desc: "永久增加3%暴擊率",
                 materials: [
                     { name: "金礦石", amount: 10 },
                     { name: "星辰碎片", amount: 2 },
@@ -1870,7 +1988,8 @@
         hp: 100, maxHp: 100, mp: 100, maxMp: 100,
         atk: 10, crit: 5, def: 0, gold: 50,
         depth: 0, level: 1, exp: 0, maxExp: 100,
-        bag: [], weapon: null, armor: null, class: "",
+        bag: {}, // 改為物件來存儲堆疊物品
+        weapon: null, armor: null, class: "",
         materials: {},
         baseMaxHp: 100,
         baseAtk: 10,
@@ -1892,6 +2011,7 @@
         currentPage: "adventure",
         chestActive: false,
         eventActive: false,
+        isExploring: false, // 新增：標記是否正在探索
 
         init(clsId) {
             // 職業初始化
@@ -1903,6 +2023,7 @@
                 Player.baseAtk = 12;
                 Player.baseDef = 2;
                 Player.maxMp = 80; Player.mp = 80; 
+                Player.crit = 5; // 騎士基礎暴擊5%
             }
             else if(clsId === 'thief'){ 
                 Player.class = "盜賊"; 
@@ -1923,6 +2044,7 @@
                 Player.baseAtk = 10;
                 Player.baseDef = 0;
                 Player.maxMp = 200; Player.mp = 200; 
+                Player.crit = 5; // 法師基礎暴擊5%
             }
             else if(clsId === 'ranger'){ 
                 Player.class = "獵人"; 
@@ -1949,9 +2071,7 @@
                 // 添加所有藥水各999個
                 const potions = ["小型紅藥水", "中型紅藥水", "大型紅藥水", "小型藍藥水", "中型藍藥水", "大型藍藥水", "全恢復藥水"];
                 potions.forEach(potion => {
-                    for (let i = 0; i < 999; i++) {
-                        Player.bag.push({ name: potion, ...DB.items[potion], enhanceLevel: 0 });
-                    }
+                    Game.addItem(potion, 999);
                 });
                 
                 // 添加所有素材各999個
@@ -1959,30 +2079,28 @@
                                  "魔法結晶", "靈魂碎片", "火焰之心", "冰霜核心", "雷電之核", "龍鱗", "鳳凰之羽", 
                                  "惡魔角", "天使之羽", "星辰碎片", "神之血", "強化寶石"];
                 materials.forEach(mat => {
-                    Player.materials[mat] = 999;
+                    Game.addMaterial(mat, 999);
                 });
                 
                 // 添加所有護符各999個
                 const buffs = ["力量護符", "防禦護符", "生命護符", "魔力護符", "暴擊寶珠"];
                 buffs.forEach(buff => {
-                    for (let i = 0; i < 999; i++) {
-                        Player.bag.push({ name: buff, ...DB.items[buff], enhanceLevel: 0 });
-                    }
+                    Game.addItem(buff, 999);
                 });
                 
                 // 添加上帝專屬裝備
-                Player.bag.push({ name: "神怒之刃", ...DB.items["神怒之刃"], enhanceLevel: 0 });
-                Player.bag.push({ name: "不朽戰甲", ...DB.items["不朽戰甲"], enhanceLevel: 0 });
+                Game.addItem("神怒之刃", 1);
+                Game.addItem("不朽戰甲", 1);
                 
                 // 自動裝備最好的裝備
-                const godWeapon = Player.bag.find(item => item.name === "神怒之刃");
-                const godArmor = Player.bag.find(item => item.name === "不朽戰甲");
+                const godWeapon = Game.findItemInBag("神怒之刃");
+                const godArmor = Game.findItemInBag("不朽戰甲");
                 
                 if (godWeapon) {
                     Player.weapon = godWeapon;
                     Player.equipmentAtkPercent = godWeapon.atkPercent || 0;
                     // 從背包移除
-                    Player.bag = Player.bag.filter(item => !(item.name === "神怒之刃" && item === godWeapon));
+                    Game.removeItemFromBag("神怒之刃", 1);
                 }
                 
                 if (godArmor) {
@@ -1991,7 +2109,7 @@
                     if (godArmor.hpPercent) Player.equipmentHpPercent += godArmor.hpPercent;
                     if (godArmor.def) Player.equipmentDefBonus += godArmor.def;
                     // 從背包移除
-                    Player.bag = Player.bag.filter(item => !(item.name === "不朽戰甲" && item === godArmor));
+                    Game.removeItemFromBag("不朽戰甲", 1);
                 }
                 
                 UI.log("⚡ 上帝模式已激活！");
@@ -2004,7 +2122,7 @@
             Player.maxExp = 100;
             if (clsId !== 'god') Player.gold = 50;
             if (clsId !== 'god') {
-                Player.bag = [];
+                Player.bag = {};
                 Player.weapon = null;
                 Player.armor = null;
                 Player.materials = {};
@@ -2016,8 +2134,8 @@
                 Player.debuffs = [];
                 
                 // 給初始物品
-                this.addItem("小型紅藥水");
-                this.addMaterial("強化寶石", 5);
+                Game.addItem("小型紅藥水", 1);
+                Game.addMaterial("強化寶石", 5);
             }
             
             Game.bossCount = 0;
@@ -2025,6 +2143,7 @@
             isCombatAction = false;
             isOpeningChest = false;
             isProcessingEvent = false;
+            Game.isExploring = false;
             currentBagCategory = 'all';
             currentShopCategory = 'potion';
             
@@ -2150,10 +2269,10 @@
         },
 
         explore() {
-            if (this.currentPage !== 'adventure') return;
+            if (this.currentPage !== 'adventure' || this.isExploring) return;
             
-            Player.depth++;
-            UI.log(`深入到第 ${Player.depth} 層`);
+            this.isExploring = true;
+            UI.log(`開始探索...`);
             
             // 隨機事件觸發（根據難度）
             const eventChance = DIFFICULTY_MODIFIERS[gameDifficulty].eventChance;
@@ -2178,6 +2297,8 @@
 
         triggerCombat() {
             this.state = "combat";
+            this.isExploring = false;
+            Player.depth++; // 只有進入戰鬥時才增加層數
             const lvl = Math.max(0, Math.floor((Player.depth - 1) / 5));
             const idx = Math.min(DB.monsters.length - 1, lvl);
             const m = DB.monsters[idx];
@@ -2195,6 +2316,8 @@
 
         triggerBoss() {
             this.state = "combat";
+            this.isExploring = false;
+            Player.depth++; // 只有進入戰鬥時才增加層數
             this.bossCount++;
             const boss = DB.bosses[(this.bossCount - 1) % DB.bosses.length];
             const growth = 1 + (Player.depth * DIFFICULTY_MODIFIERS[gameDifficulty].monsterGrowth * 1.5);
@@ -2214,6 +2337,7 @@
 
         triggerChest() {
             this.state = "idle";
+            this.isExploring = false;
             this.chestActive = true;
             isOpeningChest = false; // 重置寶箱開啟狀態
             document.getElementById('chest-icon').innerText = "🎁";
@@ -2230,6 +2354,7 @@
 
         triggerRandomEvent() {
             this.state = "idle";
+            this.isExploring = false;
             this.eventActive = true;
             isProcessingEvent = false; // 重置事件處理狀態
             
@@ -2249,17 +2374,41 @@
             UI.log(`遇到了隨機事件：${event.name}`);
         },
 
+        // 修改添加物品函數以支持堆疊
         addItem(name, count = 1) {
+            if (!Player.bag[name]) {
+                Player.bag[name] = {
+                    ...DB.items[name],
+                    count: 0,
+                    enhanceLevel: 0
+                };
+            }
+            
+            Player.bag[name].count += count;
+            
             if (count === 1) {
-                Player.bag.push({ name, ...DB.items[name], enhanceLevel: 0 });
                 UI.log(`獲得: ${name}`);
             } else {
-                for (let i = 0; i < count; i++) {
-                    Player.bag.push({ name, ...DB.items[name], enhanceLevel: 0 });
-                }
                 UI.log(`獲得: ${name} x${count}`);
             }
             UI.update();
+        },
+
+        // 從背包移除物品
+        removeItemFromBag(name, count = 1) {
+            if (Player.bag[name] && Player.bag[name].count >= count) {
+                Player.bag[name].count -= count;
+                if (Player.bag[name].count <= 0) {
+                    delete Player.bag[name];
+                }
+                return true;
+            }
+            return false;
+        },
+
+        // 查找背包中的物品
+        findItemInBag(name) {
+            return Player.bag[name] ? {...Player.bag[name], name: name} : null;
         },
 
         addMaterial(name, amount = 1) {
@@ -2309,8 +2458,8 @@
             for (const mat of recipe.materials) {
                 if (mat.name === "銀製長劍" || mat.name === "鋼鐵長劍") {
                     // 檢查是否有這個武器
-                    const weaponCount = Player.bag.filter(item => item.name === mat.name).length;
-                    if (weaponCount < mat.amount) {
+                    const weapon = this.findItemInBag(mat.name);
+                    if (!weapon || weapon.count < mat.amount) {
                         UI.log(`素材不足！需要 ${mat.name} x${mat.amount}`);
                         return false;
                     }
@@ -2324,20 +2473,17 @@
             for (const mat of recipe.materials) {
                 if (mat.name === "銀製長劍" || mat.name === "鋼鐵長劍") {
                     // 從背包中移除武器
-                    for (let i = 0; i < mat.amount; i++) {
-                        const index = Player.bag.findIndex(item => item.name === mat.name);
-                        if (index !== -1) {
-                            Player.bag.splice(index, 1);
-                        }
-                    }
+                    this.removeItemFromBag(mat.name, mat.amount);
                 } else {
                     this.removeMaterial(mat.name, mat.amount);
                 }
             }
             
-            // 檢查是否為特殊裝備
-            if (recipe.result in DB.items) {
-                this.addItem(recipe.result);
+            // 檢查是否為護符（buff類）
+            if (recipe.result in DB.items && DB.items[recipe.result].type === "buff") {
+                this.addItem(recipe.result, 1);
+            } else if (recipe.result in DB.items) {
+                this.addItem(recipe.result, 1);
             } else {
                 // 這是特殊裝備，直接添加到背包
                 const specialItem = {
@@ -2355,7 +2501,7 @@
                     isSpecial: true,
                     enhanceLevel: 0
                 };
-                Player.bag.push(specialItem);
+                this.addItem(recipe.result, 1);
             }
             
             UI.log(`成功鍛造了 ${recipe.name}！`);
@@ -2363,8 +2509,8 @@
             return true;
         },
 
-        enhanceItem(itemIndex) {
-            const item = Player.bag[itemIndex];
+        enhanceItem(itemName) {
+            const item = Player.bag[itemName];
             if (!item || (item.type !== 'weapon' && item.type !== 'armor')) {
                 UI.log("無法強化此物品");
                 return false;
@@ -2424,26 +2570,28 @@
                     item.hpPercent = (item.baseHpPercent || 0) + (rules.hpPercent * item.enhanceLevel);
                 }
                 
-                UI.log(`${item.name} 強化成功！現在是 +${item.enhanceLevel}`);
+                UI.log(`${itemName} 強化成功！現在是 +${item.enhanceLevel}`);
                 
                 // 更新裝備中的物品
-                if (Player.weapon && Player.weapon.name === item.name) {
+                if (Player.weapon && Player.weapon.name === itemName) {
                     Player.weapon = {...item};
+                    Player.weapon.name = itemName;
                     this.updatePlayerStats();
                 }
-                if (Player.armor && Player.armor.name === item.name) {
+                if (Player.armor && Player.armor.name === itemName) {
                     Player.armor = {...item};
+                    Player.armor.name = itemName;
                     this.updatePlayerStats();
                 }
                 
                 // 顯示特效
-                const itemSlot = document.querySelectorAll('.item-slot')[itemIndex];
+                const itemSlot = document.querySelector(`.item-slot[data-name="${itemName}"]`);
                 if (itemSlot) {
                     itemSlot.classList.add('enhance-success');
                     setTimeout(() => itemSlot.classList.remove('enhance-success'), 1000);
                 }
             } else {
-                UI.log(`${item.name} 強化失敗！`);
+                UI.log(`${itemName} 強化失敗！`);
             }
             
             UI.renderUpgrade();
@@ -2465,31 +2613,31 @@
                     Player.baseMaxHp += 25; 
                     Player.baseAtk += 4; 
                     Player.baseDef += 1; // 騎士每次升級增加1點基礎防禦
-                    Player.crit += 0.5;
+                    // 移除暴擊成長
                 }
                 else if(Player.class === "盜賊") { 
                     Player.baseMaxHp += 15; 
                     Player.baseAtk += 6; 
-                    Player.crit += 2.5; 
+                    // 移除暴擊成長，改為基礎5%
                     Player.baseDef += 0.2; // 盜賊增加少量防禦
                 }
                 else if(Player.class === "法師") { 
                     Player.baseMaxHp += 10; 
                     Player.maxMp += 40; 
                     Player.baseAtk += 4; 
-                    Player.crit += 1;
+                    // 移除暴擊成長
                     Player.baseDef += 0.1; // 法師增加極少量防禦
                 }
                 else if(Player.class === "獵人") { 
                     Player.baseMaxHp += 18; 
                     Player.baseAtk += 5; 
-                    Player.crit += 1.5; 
+                    // 移除暴擊成長，改為基礎5%
                     Player.baseDef += 0.5; // 獵人增加中等防禦
                 }
                 else if(Player.class === "上帝") { 
                     Player.baseMaxHp += 1000; 
                     Player.baseAtk += 100; 
-                    Player.crit += 2; 
+                    // 移除暴擊成長
                     Player.baseDef += 5;
                     Player.maxMp += 1000;
                 }
@@ -2620,7 +2768,7 @@
                     Game.gainExp(0); // 觸發升級檢查
                     break;
                 case "item":
-                    Game.addItem(reward.item);
+                    Game.addItem(reward.item, 1);
                     break;
                 case "material":
                     Game.addMaterial(reward.item, reward.amount);
@@ -2873,6 +3021,7 @@
             
             Player.hp -= finalDamage;
             UI.float(`-${finalDamage}`, "var(--danger)");
+            UI.shake(); // 玩家受到傷害時震動
             UI.log(`${Game.enemy.name} 對你造成 ${finalDamage} 傷害 (原始傷害: ${enemyDamage.toFixed(1)}, 防禦減免: ${Player.def})`);
             
             if (Player.hp <= 0) {
@@ -2901,7 +3050,7 @@
             if (Game.enemy.isBoss && Math.random() < 0.3) {
                 const bossItems = ["火焰劍", "冰霜之刃", "英雄之刃", "龍鱗甲", "聖騎士盔甲"];
                 const randomItem = bossItems[Math.floor(Math.random() * bossItems.length)];
-                Game.addItem(randomItem);
+                Game.addItem(randomItem, 1);
             }
             
             Game.state = "idle";
@@ -2932,6 +3081,7 @@
                 }, 800);
             } else {
                 UI.log("逃跑失敗！");
+                UI.shake(); // 逃跑失敗時震動螢幕
                 // 逃跑失敗會被敵人攻擊
                 setTimeout(() => {
                     // 在事件描述區域顯示逃跑失敗
@@ -2952,6 +3102,7 @@
                         // 直接執行敵人攻擊邏輯
                         Player.hp -= finalDamage;
                         UI.float(`-${finalDamage}`, "var(--danger)");
+                        UI.shake(); // 受到傷害時震動
                         UI.log(`${Game.enemy.name} 趁你逃跑時攻擊，對你造成 ${finalDamage} 傷害`);
                         
                         // 恢復原來的描述
@@ -3093,7 +3244,17 @@
             let itemsToShow = [];
             
             if (currentBagCategory === 'all') {
-                itemsToShow = [...Player.bag];
+                // 添加物品
+                Object.keys(Player.bag).forEach(name => {
+                    const item = Player.bag[name];
+                    if (item && item.count > 0) {
+                        itemsToShow.push({ 
+                            name, 
+                            ...item,
+                            isItem: true
+                        });
+                    }
+                });
                 // 添加材料
                 Object.keys(Player.materials).forEach(name => {
                     const count = Player.materials[name];
@@ -3120,8 +3281,50 @@
                         });
                     }
                 });
-            } else {
-                itemsToShow = Player.bag.filter(item => item.category === currentBagCategory);
+            } else if (currentBagCategory === 'potion') {
+                Object.keys(Player.bag).forEach(name => {
+                    const item = Player.bag[name];
+                    if (item && item.count > 0 && item.category === 'potion') {
+                        itemsToShow.push({ 
+                            name, 
+                            ...item,
+                            isItem: true
+                        });
+                    }
+                });
+            } else if (currentBagCategory === 'weapon') {
+                Object.keys(Player.bag).forEach(name => {
+                    const item = Player.bag[name];
+                    if (item && item.count > 0 && item.category === 'weapon') {
+                        itemsToShow.push({ 
+                            name, 
+                            ...item,
+                            isItem: true
+                        });
+                    }
+                });
+            } else if (currentBagCategory === 'armor') {
+                Object.keys(Player.bag).forEach(name => {
+                    const item = Player.bag[name];
+                    if (item && item.count > 0 && item.category === 'armor') {
+                        itemsToShow.push({ 
+                            name, 
+                            ...item,
+                            isItem: true
+                        });
+                    }
+                });
+            } else if (currentBagCategory === 'buff') {
+                Object.keys(Player.bag).forEach(name => {
+                    const item = Player.bag[name];
+                    if (item && item.count > 0 && item.category === 'buff') {
+                        itemsToShow.push({ 
+                            name, 
+                            ...item,
+                            isItem: true
+                        });
+                    }
+                });
             }
             
             if (itemsToShow.length === 0) {
@@ -3130,12 +3333,13 @@
                 else if (currentBagCategory === 'weapon') emptyMessage = "沒有武器";
                 else if (currentBagCategory === 'armor') emptyMessage = "沒有盔甲";
                 else if (currentBagCategory === 'material') emptyMessage = "沒有素材";
+                else if (currentBagCategory === 'buff') emptyMessage = "沒有護符";
                 
                 bagDiv.innerHTML = `<div style='grid-column:1/-1; text-align:center; color:#666; padding:10px; font-size:0.8em;'>${emptyMessage}</div>`;
                 return;
             }
             
-            itemsToShow.forEach((item, i) => {
+            itemsToShow.forEach((item) => {
                 const slot = document.createElement('div');
                 
                 // 根據物品品質設定邊框顏色
@@ -3147,6 +3351,7 @@
                 }
                 
                 slot.className = `item-slot ${rarityClass} category-${item.category || 'material'}`;
+                slot.setAttribute('data-name', item.name);
                 
                 // 如果有強化等級，添加強化標記
                 if (item.enhanceLevel > 0) {
@@ -3154,26 +3359,26 @@
                     slot.setAttribute('data-enhance', `+${item.enhanceLevel}`);
                 }
                 
+                // 檢查是否已裝備
+                const isEquipped = (Player.weapon && Player.weapon.name === item.name) || 
+                                  (Player.armor && Player.armor.name === item.name);
+                
+                if (isEquipped) {
+                    slot.classList.add('item-equipped');
+                }
+                
                 // 顯示圖標
                 slot.innerHTML = `${item.icon}`;
                 
-                // 如果是素材，顯示數量
-                if (item.isMaterial && item.count > 1) {
-                    const countBadge = document.createElement('div');
-                    countBadge.style.position = 'absolute';
-                    countBadge.style.bottom = '1px';
-                    countBadge.style.right = '1px';
-                    countBadge.style.background = 'var(--accent)';
-                    countBadge.style.color = 'white';
-                    countBadge.style.borderRadius = '50%';
-                    countBadge.style.width = '14px';
-                    countBadge.style.height = '14px';
-                    countBadge.style.fontSize = '9px';
-                    countBadge.style.display = 'flex';
-                    countBadge.style.alignItems = 'center';
-                    countBadge.style.justifyContent = 'center';
-                    countBadge.innerText = item.count > 9 ? '9+' : (item.count > 999 ? '999+' : item.count);
-                    slot.appendChild(countBadge);
+                // 顯示數量（如果大於1）
+                if ((item.count > 1 || item.isMaterial) && !isEquipped) {
+                    const count = item.count || 1;
+                    if (count > 1) {
+                        const countBadge = document.createElement('div');
+                        countBadge.className = 'item-count';
+                        countBadge.innerText = count > 9 ? '9+' : (count > 999 ? '999+' : count);
+                        slot.appendChild(countBadge);
+                    }
                 }
                 
                 // 為素材添加點擊事件
@@ -3184,7 +3389,7 @@
                     };
                 } else {
                     // 普通物品點擊
-                    slot.onclick = () => this.openItemModal(item, i);
+                    slot.onclick = () => this.openItemModal(item);
                 }
                 
                 bagDiv.appendChild(slot);
@@ -3270,8 +3475,8 @@
                     let hasEnough = false;
                     if (mat.name === "銀製長劍" || mat.name === "鋼鐵長劍") {
                         // 檢查背包中是否有這個武器
-                        const weaponCount = Player.bag.filter(item => item.name === mat.name).length;
-                        hasEnough = weaponCount >= mat.amount;
+                        const weapon = Game.findItemInBag(mat.name);
+                        hasEnough = weapon && weapon.count >= mat.amount;
                     } else {
                         hasEnough = Game.getMaterialCount(mat.name) >= mat.amount;
                     }
@@ -3280,7 +3485,8 @@
                     
                     let countText = "";
                     if (mat.name === "銀製長劍" || mat.name === "鋼鐵長劍") {
-                        const weaponCount = Player.bag.filter(item => item.name === mat.name).length;
+                        const weapon = Game.findItemInBag(mat.name);
+                        const weaponCount = weapon ? weapon.count : 0;
                         countText = `(${weaponCount}/${mat.amount})`;
                     } else {
                         countText = `(${Game.getMaterialCount(mat.name)}/${mat.amount})`;
@@ -3327,7 +3533,14 @@
             upgradeList.innerHTML = "";
             
             // 找出所有可以強化的物品（武器和盔甲）
-            const upgradableItems = Player.bag.filter(item => item.type === 'weapon' || item.type === 'armor');
+            const upgradableItems = [];
+            Object.keys(Player.bag).forEach(name => {
+                const item = Player.bag[name];
+                if ((item.type === 'weapon' || item.type === 'armor') && item.count > 0) {
+                    // 為每個物品實例創建一個條目
+                    upgradableItems.push({name: name, ...item});
+                }
+            });
             
             if (upgradableItems.length === 0) {
                 upgradeList.innerHTML = `
@@ -3340,8 +3553,7 @@
                 return;
             }
             
-            upgradableItems.forEach((item, index) => {
-                const originalIndex = Player.bag.indexOf(item);
+            upgradableItems.forEach((item) => {
                 const rules = DB.enhancementRules[item.type];
                 const nextLevel = item.enhanceLevel + 1;
                 const cost = rules.costMultiplier * nextLevel;
@@ -3385,7 +3597,7 @@
                     <div class="upgrade-card-footer">
                         <span class="upgrade-card-price">強化等級: ${item.enhanceLevel}/9</span>
                         <button class="btn" style="padding:3px 6px; font-size:0.65em;" 
-                            onclick="Game.enhanceItem(${originalIndex})" 
+                            onclick="Game.enhanceItem('${item.name}')" 
                             ${Player.gold < cost || Game.getMaterialCount("強化寶石") < materialNeeded || item.enhanceLevel >= 9 ? 'disabled' : ''}>
                             強化
                         </button>
@@ -3396,7 +3608,7 @@
             });
         },
 
-        openItemModal(item, index) {
+        openItemModal(item) {
             document.getElementById('m-icon').innerText = item.icon;
             
             // 顯示物品名稱（含強化等級）
@@ -3471,6 +3683,13 @@
                 } else if (item.type === 'buff') {
                     statsHTML = `<div>效果: ${item.desc}</div>`;
                 }
+                
+                // 顯示數量（如果不是裝備中的物品）
+                const isEquipped = (Player.weapon && Player.weapon.name === item.name) || 
+                                  (Player.armor && Player.armor.name === item.name);
+                if (!isEquipped && item.count > 1) {
+                    statsHTML += `<div>數量: ${item.count}</div>`;
+                }
             }
             
             statsDiv.innerHTML = statsHTML;
@@ -3482,8 +3701,8 @@
                 return;
             } else {
                 // 檢查是否已裝備
-                const isEquippedWeapon = Player.weapon && Player.weapon.name === item.name && Player.weapon.enhanceLevel === item.enhanceLevel;
-                const isEquippedArmor = Player.armor && Player.armor.name === item.name && Player.armor.enhanceLevel === item.enhanceLevel;
+                const isEquippedWeapon = Player.weapon && Player.weapon.name === item.name;
+                const isEquippedArmor = Player.armor && Player.armor.name === item.name;
                 const isEquipped = isEquippedWeapon || isEquippedArmor;
                 
                 // 檢查是否在戰鬥中（某些物品不能在戰鬥中使用）
@@ -3498,7 +3717,8 @@
                     } else if (isEquipped) {
                         act.innerText = "卸下";
                         act.onclick = () => {
-                            Player.bag.push(Player.weapon);
+                            // 卸下武器，放回背包
+                            Game.addItem(item.name, 1);
                             Player.weapon = null;
                             Player.equipmentAtkPercent = 0;
                             Game.updatePlayerStats();
@@ -3509,13 +3729,18 @@
                     } else {
                         act.innerText = "裝備";
                         act.onclick = () => {
-                            if(Player.weapon) {
-                                Player.bag.push(Player.weapon);
+                            // 從背包移除一個
+                            Game.removeItemFromBag(item.name, 1);
+                            
+                            // 如果已有裝備的武器，放回背包
+                            if (Player.weapon) {
+                                Game.addItem(Player.weapon.name, 1);
                                 Player.equipmentAtkPercent = 0;
                             }
                             
-                            Player.weapon = item;
-                            Player.bag.splice(index, 1);
+                            // 裝備新武器
+                            Player.weapon = {...item};
+                            Player.weapon.name = item.name;
                             
                             // 添加武器百分比加成
                             if (item.atkPercent) {
@@ -3538,7 +3763,8 @@
                     } else if (isEquipped) {
                         act.innerText = "卸下";
                         act.onclick = () => {
-                            Player.bag.push(Player.armor);
+                            // 卸下盔甲，放回背包
+                            Game.addItem(item.name, 1);
                             Player.armor = null;
                             
                             // 移除盔甲加成
@@ -3555,17 +3781,22 @@
                     } else {
                         act.innerText = "裝備";
                         act.onclick = () => {
-                            if(Player.armor) {
+                            // 從背包移除一個
+                            Game.removeItemFromBag(item.name, 1);
+                            
+                            if (Player.armor) {
                                 // 移除舊盔甲加成
                                 if (Player.armor.hp) Player.equipmentHpBonus -= Player.armor.hp;
                                 if (Player.armor.hpPercent) Player.equipmentHpPercent -= Player.armor.hpPercent;
                                 if (Player.armor.def) Player.equipmentDefBonus -= Player.armor.def;
                                 
-                                Player.bag.push(Player.armor);
+                                // 放回背包
+                                Game.addItem(Player.armor.name, 1);
                             }
                             
-                            Player.armor = item;
-                            Player.bag.splice(index, 1);
+                            // 裝備新盔甲
+                            Player.armor = {...item};
+                            Player.armor.name = item.name;
                             
                             // 添加新盔甲加成
                             if (item.hp) Player.equipmentHpBonus += item.hp;
@@ -3582,6 +3813,9 @@
                 } else if (item.type === 'buff') {
                     act.innerText = "使用";
                     act.onclick = () => {
+                        // 從背包移除一個
+                        Game.removeItemFromBag(item.name, 1);
+                        
                         if (item.stat === 'atk') {
                             Player.baseAtk += item.val;
                             Player.equipmentAtkPercent = 0; // 重置百分比加成
@@ -3600,7 +3834,6 @@
                             Player.maxMp += item.val; 
                             Player.mp += item.val;
                         }
-                        Player.bag.splice(index, 1);
                         this.closeModal();
                         UI.log(`使用了 ${item.name}！`);
                         Game.updatePlayerStats();
@@ -3610,13 +3843,15 @@
                     // 藥水類可以在戰鬥中使用
                     act.innerText = "使用";
                     act.onclick = () => {
+                        // 從背包移除一個
+                        Game.removeItemFromBag(item.name, 1);
+                        
                         if(item.effect === 'hp') Player.hp = Math.min(Player.maxHp, Player.hp + item.val);
                         else if(item.effect === 'mp') Player.mp = Math.min(Player.maxMp, Player.mp + item.val);
                         else if(item.effect === 'both') {
                             Player.hp = Player.maxHp;
                             Player.mp = Player.maxMp;
                         }
-                        Player.bag.splice(index, 1);
                         this.closeModal();
                         UI.log(`使用了 ${item.name}！`);
                         UI.update();
